@@ -15,11 +15,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Helper to read database
 const { spawnSync } = require('child_process');
-const CLOUD_DB_URL = "https://api.jsonbin.io/v3/b/6a1c371321f9ee59d2a1256d";
-const MASTER_KEY = "$2a$10$pf8Ir8J3zqVayAPCpWrJJOcPkv0yqKHN9t6ukyZx5Yy8UGU5NXzxu";
+const CLOUD_DB_URL = process.env.CLOUD_DB_URL;
+const MASTER_KEY = process.env.MASTER_KEY;
+
+if (!CLOUD_DB_URL || !MASTER_KEY) {
+  console.log("==================================================");
+  console.log(" NOTICE: Cloud DB credentials not set in environment.");
+  console.log(" Running in LOCAL-ONLY mode (using local data/db.json).");
+  console.log("==================================================");
+}
 
 // Helper to read database (Cloud sync with Local fallback)
 function readDB() {
+  if (!CLOUD_DB_URL || !MASTER_KEY) {
+    return readLocalDB();
+  }
   try {
     const result = spawnSync('curl', [
       '-s',
@@ -75,6 +85,10 @@ function writeDB(data) {
     fs.renameSync(tempPath, DB_PATH);
   } catch (err) {
     console.error('Error writing to local backup database file:', err);
+  }
+
+  if (!CLOUD_DB_URL || !MASTER_KEY) {
+    return true; // Local write succeeded, cloud sync is bypassed
   }
 
   // 2. Upload to Cloud DB synchronously using curl

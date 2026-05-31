@@ -9,10 +9,18 @@ from datetime import datetime, timedelta
 PORT = 3000
 LOCAL_DB_PATH = os.path.join(os.path.dirname(__file__), 'data', 'db.json')
 PUBLIC_DIR = os.path.join(os.path.dirname(__file__), 'public')
-CLOUD_DB_URL = "https://api.jsonbin.io/v3/b/6a1c371321f9ee59d2a1256d"
-MASTER_KEY = "$2a$10$pf8Ir8J3zqVayAPCpWrJJOcPkv0yqKHN9t6ukyZx5Yy8UGU5NXzxu"
+CLOUD_DB_URL = os.environ.get("CLOUD_DB_URL")
+MASTER_KEY = os.environ.get("MASTER_KEY")
+
+if not CLOUD_DB_URL or not MASTER_KEY:
+    print("==================================================", flush=True)
+    print(" NOTICE: Cloud DB credentials not set in environment.", flush=True)
+    print(" Running in LOCAL-ONLY mode (using local db.json).", flush=True)
+    print("==================================================", flush=True)
 
 def read_db():
+    if not CLOUD_DB_URL or not MASTER_KEY:
+        return read_local_db()
     # Try reading from JSONBin.io Cloud DB first
     try:
         req = urllib.request.Request(
@@ -49,6 +57,9 @@ def write_db(data):
         os.replace(temp_path, LOCAL_DB_PATH)
     except Exception as e:
         print("Error writing to local backup DB:", e)
+
+    if not CLOUD_DB_URL or not MASTER_KEY:
+        return True # Local write succeeded, cloud sync is bypassed
 
     # 2. Update JSONBin.io Cloud DB
     try:
