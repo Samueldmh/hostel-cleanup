@@ -31,26 +31,57 @@ function readDB() {
     return readLocalDB();
   }
   try {
-    const result = spawnSync('curl', [
-      '-s',
-      '-H', `X-Master-Key: ${MASTER_KEY}`,
-      '-H', 'X-Bin-Meta: false',
-      `${CLOUD_DB_URL}/latest`
-    ]);
-    
+    const inlineGetScript = `
+const https = require('https');
+const options = {
+  headers: {
+    'X-Master-Key': process.env.TARGET_KEY,
+    'X-Bin-Meta': 'false',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+  }
+};
+https.get(process.env.TARGET_URL + '/latest', options, (res) => {
+  let data = '';
+  res.on('data', (chunk) => data += chunk);
+  res.on('end', () => {
+    if (res.statusCode !== 200) {
+      console.error('HTTP Error ' + res.statusCode + ': ' + data);
+      process.exit(1);
+    }
+    console.log(data);
+  });
+}).on('error', (err) => {
+  console.error('Connection Error: ' + err.message);
+  process.exit(1);
+});
+    `;
+
+    const result = spawnSync('node', ['-e', inlineGetScript], {
+      env: {
+        ...process.env,
+        TARGET_URL: CLOUD_DB_URL,
+        TARGET_KEY: MASTER_KEY
+      }
+    });
+
     if (result.error) {
       throw result.error;
     }
-    
-    const curlOutput = result.stdout.toString('utf8').trim();
-    if (!curlOutput || curlOutput.includes('"message"') && curlOutput.includes('"record not found"')) {
+
+    const output = result.stdout.toString('utf8').trim();
+    if (result.status !== 0) {
+      const errOutput = result.stderr.toString('utf8').trim();
+      throw new Error(errOutput || output || 'Child process returned exit code ' + result.status);
+    }
+
+    if (!output || output.includes('"message"') && output.includes('"record not found"')) {
       console.log('Cloud database empty. Seeding from local db.json...');
       const localData = readLocalDB();
       writeDB(localData);
       return localData;
     }
     
-    const db = JSON.parse(curlOutput);
+    const db = JSON.parse(output);
     // Validate schema
     if (!db || !db.members || !db.tasks) {
       throw new Error('Cloud DB returned invalid schema');
@@ -91,25 +122,63 @@ function writeDB(data) {
     return true; // Local write succeeded, cloud sync is bypassed
   }
 
-  // 2. Upload to Cloud DB synchronously using curl
+  // 2. Upload to Cloud DB synchronously using native HTTPS in child process
   try {
-    const result = spawnSync('curl', [
-      '-s',
-      '-X', 'PUT',
-      '-H', 'Content-Type: application/json',
-      '-H', `X-Master-Key: ${MASTER_KEY}`,
-      '-d', `@${DB_PATH}`,
-      CLOUD_DB_URL
-    ]);
+    const inlinePutScript = `
+const https = require('https');
+const fs = require('fs');
+const data = fs.readFileSync(process.env.TARGET_PATH, 'utf8');
+
+const url = new URL(process.env.TARGET_URL);
+const options = {
+  hostname: url.hostname,
+  path: url.pathname + url.search,
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Master-Key': process.env.TARGET_KEY,
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+    'Content-Length': Buffer.byteLength(data)
+  }
+};
+
+const req = https.request(options, (res) => {
+  let responseData = '';
+  res.on('data', (chunk) => responseData += chunk);
+  res.on('end', () => {
+    if (res.statusCode !== 200) {
+      console.error('HTTP Error ' + res.statusCode + ': ' + responseData);
+      process.exit(1);
+    }
+    process.exit(0);
+  });
+});
+
+req.on('error', (err) => {
+  console.error('Connection Error: ' + err.message);
+  process.exit(1);
+});
+
+req.write(data);
+req.end();
+    `;
+
+    const result = spawnSync('node', ['-e', inlinePutScript], {
+      env: {
+        ...process.env,
+        TARGET_URL: CLOUD_DB_URL,
+        TARGET_KEY: MASTER_KEY,
+        TARGET_PATH: DB_PATH.replace(/\\/g, '/')
+      }
+    });
     
     if (result.error) {
       throw result.error;
     }
     
-    const output = result.stdout.toString('utf8').trim();
-    if (output.includes('"message"') && !output.includes('"success":true')) {
-      console.error('JSONBin API error on write:', output);
-      return false;
+    if (result.status !== 0) {
+      const errOutput = result.stderr.toString('utf8').trim();
+      throw new Error(errOutput || 'Child process returned exit code ' + result.status);
     }
     return true;
   } catch (err) {
