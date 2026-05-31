@@ -2,31 +2,71 @@ import http.server
 import json
 import os
 import random
+import urllib.request
+import urllib.error
 from datetime import datetime, timedelta
 
 PORT = 3000
-DB_PATH = os.path.join(os.path.dirname(__file__), 'data', 'db.json')
+LOCAL_DB_PATH = os.path.join(os.path.dirname(__file__), 'data', 'db.json')
 PUBLIC_DIR = os.path.join(os.path.dirname(__file__), 'public')
+CLOUD_DB_URL = "https://api.jsonbin.io/v3/b/6a1c371321f9ee59d2a1256d"
+MASTER_KEY = "$2a$10$pf8Ir8J3zqVayAPCpWrJJOcPkv0yqKHN9t6ukyZx5Yy8UGU5NXzxu"
 
 def read_db():
+    # Try reading from JSONBin.io Cloud DB first
     try:
-        with open(DB_PATH, 'r', encoding='utf-8') as f:
+        req = urllib.request.Request(
+            f"{CLOUD_DB_URL}/latest",
+            headers={
+                'X-Master-Key': MASTER_KEY,
+                'X-Bin-Meta': 'false',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            },
+            method="GET"
+        )
+        with urllib.request.urlopen(req, timeout=5) as response:
+            return json.loads(response.read().decode('utf-8'))
+    except Exception as e:
+        print(f"Error reading from JSONBin.io: {e}. Falling back to local.", flush=True)
+    
+    return read_local_db()
+
+def read_local_db():
+    try:
+        with open(LOCAL_DB_PATH, 'r', encoding='utf-8') as f:
             return json.load(f)
     except Exception as e:
-        print("Error reading DB:", e)
+        print("Error reading local DB:", e)
         return {"members": [], "tasks": [], "history": []}
 
 def write_db(data):
+    # 1. Update local copy as backup
     try:
-        os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
-        # Write to a temp file and rename (atomic write)
-        temp_path = DB_PATH + '.tmp'
+        os.makedirs(os.path.dirname(LOCAL_DB_PATH), exist_ok=True)
+        temp_path = LOCAL_DB_PATH + '.tmp'
         with open(temp_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
-        os.replace(temp_path, DB_PATH)
-        return True
+        os.replace(temp_path, LOCAL_DB_PATH)
     except Exception as e:
-        print("Error writing DB:", e)
+        print("Error writing to local backup DB:", e)
+
+    # 2. Update JSONBin.io Cloud DB
+    try:
+        req = urllib.request.Request(
+            CLOUD_DB_URL,
+            data=json.dumps(data, ensure_ascii=False).encode('utf-8'),
+            headers={
+                'Content-Type': 'application/json',
+                'X-Master-Key': MASTER_KEY,
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            },
+            method="PUT"
+        )
+        with urllib.request.urlopen(req, timeout=5) as response:
+            response.read()
+            return True
+    except Exception as e:
+        print("Error writing to JSONBin.io:", e)
         return False
 
 def get_consecutive_gutter_count(reg, history):
@@ -423,7 +463,8 @@ def run():
     print(f"==================================================")
     print(f" HOSTEL CLEANUP SYSTEM PYTHON SERVER RUNNING")
     print(f" Local Web Server: http://localhost:{PORT}")
-    print(f" Database Path: {DB_PATH}")
+    print(f" Database Path: {LOCAL_DB_PATH}")
+    print(f" Cloud Database: {CLOUD_DB_URL}")
     print(f"==================================================")
     try:
         httpd.serve_forever()

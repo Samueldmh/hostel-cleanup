@@ -5,7 +5,7 @@
       "name": "Innocent David",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": "tap_to_block_a"
+      "assignedLocationId": "upstairs_balcony"
     },
     {
       "reg": "20211260337",
@@ -33,7 +33,7 @@
       "name": "Iwuoha Emmanuel",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": "upstairs_boys_corridor"
+      "assignedLocationId": null
     },
     {
       "reg": "20211262237",
@@ -68,14 +68,14 @@
       "name": "Jesse",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": "tank_to_security"
+      "assignedLocationId": null
     },
     {
       "reg": "20211284277",
       "name": "Eze Chidimma",
       "gender": "female",
       "isAdmin": false,
-      "assignedLocationId": "outside_compound"
+      "assignedLocationId": null
     },
     {
       "reg": "20201227337",
@@ -89,7 +89,7 @@
       "name": "Peace Marshall",
       "gender": "female",
       "isAdmin": false,
-      "assignedLocationId": "downstairs_balcony"
+      "assignedLocationId": null
     },
     {
       "reg": "20211266587",
@@ -124,14 +124,14 @@
       "name": "Emmanuella Ebere",
       "gender": "female",
       "isAdmin": false,
-      "assignedLocationId": "downstairs_boys_corridor"
+      "assignedLocationId": null
     },
     {
       "reg": "20211274497",
       "name": "Sophia",
       "gender": "female",
       "isAdmin": false,
-      "assignedLocationId": "dustbin"
+      "assignedLocationId": null
     },
     {
       "reg": "20211271537",
@@ -158,16 +158,9 @@
       "desc": "sweep and mop",
       "capacity": 1,
       "genderRestriction": null,
-      "assignedTo": [
-        {
-          "reg": "20222322937",
-          "name": "Iwuoha Emmanuel"
-        }
-      ],
+      "assignedTo": [],
       "image": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=600&q=80",
-      "completedBy": [
-        "20222322937"
-      ]
+      "completedBy": []
     },
     {
       "id": "upstairs_girls_corridor",
@@ -185,9 +178,16 @@
       "desc": "sweep and mop",
       "capacity": 1,
       "genderRestriction": null,
-      "assignedTo": [],
+      "assignedTo": [
+        {
+          "reg": "20211305897",
+          "name": "Innocent David"
+        }
+      ],
       "image": "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=600&q=80",
-      "completedBy": []
+      "completedBy": [
+        "20211305897"
+      ]
     },
     {
       "id": "downstairs_boys_corridor",
@@ -195,16 +195,9 @@
       "desc": "sweep and mop",
       "capacity": 1,
       "genderRestriction": null,
-      "assignedTo": [
-        {
-          "reg": "20211278357",
-          "name": "Emmanuella Ebere"
-        }
-      ],
+      "assignedTo": [],
       "image": "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80",
-      "completedBy": [
-        "20211278357"
-      ]
+      "completedBy": []
     },
     {
       "id": "downstairs_girls_corridor",
@@ -222,16 +215,9 @@
       "desc": "sweep and mop",
       "capacity": 1,
       "genderRestriction": null,
-      "assignedTo": [
-        {
-          "reg": "20211270417",
-          "name": "Peace Marshall"
-        }
-      ],
+      "assignedTo": [],
       "image": "https://images.unsplash.com/photo-1464146072230-91cabc968266?auto=format&fit=crop&w=600&q=80",
-      "completedBy": [
-        "20211270417"
-      ]
+      "completedBy": []
     },
     {
       "id": "girls_backyard",
@@ -259,16 +245,9 @@
       "desc": "sweep external pathway by the fence",
       "capacity": 2,
       "genderRestriction": null,
-      "assignedTo": [
-        {
-          "reg": "20211284277",
-          "name": "Eze Chidimma"
-        }
-      ],
+      "assignedTo": [],
       "image": "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=600&q=80",
-      "completedBy": [
-        "20211284277"
-      ]
+      "completedBy": []
     },
     {
       "id": "tank_to_security",
@@ -276,16 +255,9 @@
       "desc": "sweep the entire driveway from tank stand to security",
       "capacity": 1,
       "genderRestriction": null,
-      "assignedTo": [
-        {
-          "reg": "20201244007",
-          "name": "Jesse"
-        }
-      ],
+      "assignedTo": [],
       "image": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80",
-      "completedBy": [
-        "20201244007"
-      ]
+      "completedBy": []
     },
     {
       "id": "tap_to_block_a",
@@ -293,16 +265,9 @@
       "desc": "sweep the walkway starting from the tap to block A",
       "capacity": 1,
       "genderRestriction": null,
-      "assignedTo": [
-        {
-          "reg": "20211305897",
-          "name": "Innocent David"
-        }
-      ],
+      "assignedTo": [],
       "image": "https://images.unsplash.com/photo-1595275313353-80271587b611?auto=format&fit=crop&w=600&q=80",
-      "completedBy": [
-        "20211305897"
-      ]
+      "completedBy": []
     },
     {
       "id": "the_gutter",
@@ -320,19 +285,28 @@
       "desc": "empty all hostel dustbins and dispose of trash at the main site",
       "capacity": 2,
       "genderRestriction": null,
-      "assignedTo": [
-        {
-          "reg": "20211274497",
-          "name": "Sophia"
-        }
-      ],
+      "assignedTo": [],
       "image": "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=600&q=80",
-      "completedBy": [
-        "20211274497"
-      ]
+      "completedBy": []
     }
   ],
   "history": [
+    {
+      "timestamp": "05/31/2026, 02:31:18 PM",
+      "message": "Admin Ezeigwe Samuel marked Innocent David's task at \"Upstairs balcony\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 02:31:09 PM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"Upstairs balcony\""
+    },
+    {
+      "timestamp": "05/31/2026, 02:31:06 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 02:20:14 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
     {
       "timestamp": "05/31/2026, 12:48:09 PM",
       "message": "Admin Ezeigwe Samuel marked Iwuoha Emmanuel's task at \"Upstairs boys corridor\" as completed!"

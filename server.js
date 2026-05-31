@@ -14,31 +14,92 @@ app.use(bodyParser.json({ limit: '10mb' })); // Allow larger payloads for compre
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Helper to read database
+const { spawnSync } = require('child_process');
+const CLOUD_DB_URL = "https://api.jsonbin.io/v3/b/6a1c371321f9ee59d2a1256d";
+const MASTER_KEY = "$2a$10$pf8Ir8J3zqVayAPCpWrJJOcPkv0yqKHN9t6ukyZx5Yy8UGU5NXzxu";
+
+// Helper to read database (Cloud sync with Local fallback)
 function readDB() {
+  try {
+    const result = spawnSync('curl', [
+      '-s',
+      '-H', `X-Master-Key: ${MASTER_KEY}`,
+      '-H', 'X-Bin-Meta: false',
+      `${CLOUD_DB_URL}/latest`
+    ]);
+    
+    if (result.error) {
+      throw result.error;
+    }
+    
+    const curlOutput = result.stdout.toString('utf8').trim();
+    if (!curlOutput || curlOutput.includes('"message"') && curlOutput.includes('"record not found"')) {
+      console.log('Cloud database empty. Seeding from local db.json...');
+      const localData = readLocalDB();
+      writeDB(localData);
+      return localData;
+    }
+    
+    const db = JSON.parse(curlOutput);
+    // Validate schema
+    if (!db || !db.members || !db.tasks) {
+      throw new Error('Cloud DB returned invalid schema');
+    }
+    return db;
+  } catch (err) {
+    console.error('Error reading from Cloud DB, falling back to local:', err);
+    return readLocalDB();
+  }
+}
+
+function readLocalDB() {
   try {
     const data = fs.readFileSync(DB_PATH, 'utf8');
     return JSON.parse(data);
   } catch (err) {
-    console.error('Error reading database file:', err);
+    console.error('Error reading local database file:', err);
     return { members: [], tasks: [], history: [] };
   }
 }
 
-// Helper to write database atomically
+// Helper to write database (Cloud sync with Local backup)
 function writeDB(data) {
+  // 1. Write local backup
   try {
-    // Ensure parent directory exists
     const dir = path.dirname(DB_PATH);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
-    // Atomic write to prevent file corruption
     const tempPath = DB_PATH + '.tmp';
     fs.writeFileSync(tempPath, JSON.stringify(data, null, 2), 'utf8');
     fs.renameSync(tempPath, DB_PATH);
+  } catch (err) {
+    console.error('Error writing to local backup database file:', err);
+  }
+
+  // 2. Upload to Cloud DB synchronously using curl
+  try {
+    const result = spawnSync('curl', [
+      '-s',
+      '-X', 'PUT',
+      '-H', 'Content-Type: application/json',
+      '-H', `X-Master-Key: ${MASTER_KEY}`,
+      '-d', `@${DB_PATH}`,
+      CLOUD_DB_URL
+    ]);
+    
+    if (result.error) {
+      throw result.error;
+    }
+    
+    const output = result.stdout.toString('utf8').trim();
+    if (output.includes('"message"') && !output.includes('"success":true')) {
+      console.error('JSONBin API error on write:', output);
+      return false;
+    }
     return true;
   } catch (err) {
-    console.error('Error writing to database file:', err);
+    console.error('Error writing to Cloud DB:', err);
     return false;
   }
 }
