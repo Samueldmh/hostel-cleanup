@@ -1,0 +1,725 @@
+{
+  "members": [
+    {
+      "reg": "20211305897",
+      "name": "Innocent David",
+      "gender": "male",
+      "isAdmin": false,
+      "assignedLocationId": "tap_to_block_a"
+    },
+    {
+      "reg": "20211260337",
+      "name": "Ogazie Samuel",
+      "gender": "male",
+      "isAdmin": false,
+      "assignedLocationId": null
+    },
+    {
+      "reg": "202113260487",
+      "name": "Oparaji Wisdom",
+      "gender": "male",
+      "isAdmin": false,
+      "assignedLocationId": null
+    },
+    {
+      "reg": "20211280127",
+      "name": "Anyawu Chibuke",
+      "gender": "male",
+      "isAdmin": false,
+      "assignedLocationId": null
+    },
+    {
+      "reg": "20222322937",
+      "name": "Iwuoha Emmanuel",
+      "gender": "male",
+      "isAdmin": false,
+      "assignedLocationId": "upstairs_boys_corridor"
+    },
+    {
+      "reg": "20211262237",
+      "name": "Alfred Sankwai",
+      "gender": "male",
+      "isAdmin": false,
+      "assignedLocationId": null
+    },
+    {
+      "reg": "20201224687",
+      "name": "Sylvester Agbo",
+      "gender": "male",
+      "isAdmin": false,
+      "assignedLocationId": null
+    },
+    {
+      "reg": "20201224647",
+      "name": "Jonathan Edwin",
+      "gender": "male",
+      "isAdmin": false,
+      "assignedLocationId": null
+    },
+    {
+      "reg": "20201225657",
+      "name": "Okeke Munachi",
+      "gender": "male",
+      "isAdmin": false,
+      "assignedLocationId": null
+    },
+    {
+      "reg": "20201244007",
+      "name": "Jesse",
+      "gender": "male",
+      "isAdmin": false,
+      "assignedLocationId": "tank_to_security"
+    },
+    {
+      "reg": "20211284277",
+      "name": "Eze Chidimma",
+      "gender": "female",
+      "isAdmin": false,
+      "assignedLocationId": "outside_compound"
+    },
+    {
+      "reg": "20201227337",
+      "name": "Anyajugo Confidence",
+      "gender": "female",
+      "isAdmin": false,
+      "assignedLocationId": null
+    },
+    {
+      "reg": "20211270417",
+      "name": "Peace Marshall",
+      "gender": "female",
+      "isAdmin": false,
+      "assignedLocationId": "downstairs_balcony"
+    },
+    {
+      "reg": "20211266587",
+      "name": "Akabuike Favour",
+      "gender": "female",
+      "isAdmin": false,
+      "assignedLocationId": null
+    },
+    {
+      "reg": "20201251837",
+      "name": "Bumma",
+      "gender": "female",
+      "isAdmin": false,
+      "assignedLocationId": null
+    },
+    {
+      "reg": "20211275397",
+      "name": "Anyawu Precious",
+      "gender": "female",
+      "isAdmin": false,
+      "assignedLocationId": null
+    },
+    {
+      "reg": "20211270207",
+      "name": "Ugochi Nwachukwu",
+      "gender": "female",
+      "isAdmin": false,
+      "assignedLocationId": null
+    },
+    {
+      "reg": "20211278357",
+      "name": "Emmanuella Ebere",
+      "gender": "female",
+      "isAdmin": false,
+      "assignedLocationId": "downstairs_boys_corridor"
+    },
+    {
+      "reg": "20211274497",
+      "name": "Sophia",
+      "gender": "female",
+      "isAdmin": false,
+      "assignedLocationId": "dustbin"
+    },
+    {
+      "reg": "20211271537",
+      "name": "Ezeigwe Samuel",
+      "gender": "male",
+      "isAdmin": true,
+      "assignedLocationId": null
+    }
+  ],
+  "tasks": [
+    {
+      "id": "staircase",
+      "name": "The staircase",
+      "desc": "sweep and mop",
+      "capacity": 1,
+      "genderRestriction": null,
+      "assignedTo": [],
+      "image": "https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?auto=format&fit=crop&w=600&q=80",
+      "completedBy": []
+    },
+    {
+      "id": "upstairs_boys_corridor",
+      "name": "Upstairs boys corridor",
+      "desc": "sweep and mop",
+      "capacity": 1,
+      "genderRestriction": null,
+      "assignedTo": [
+        {
+          "reg": "20222322937",
+          "name": "Iwuoha Emmanuel"
+        }
+      ],
+      "image": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=600&q=80",
+      "completedBy": [
+        "20222322937"
+      ]
+    },
+    {
+      "id": "upstairs_girls_corridor",
+      "name": "Upstairs girls corridor",
+      "desc": "sweep and mop",
+      "capacity": 1,
+      "genderRestriction": null,
+      "assignedTo": [],
+      "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80",
+      "completedBy": []
+    },
+    {
+      "id": "upstairs_balcony",
+      "name": "Upstairs balcony",
+      "desc": "sweep and mop",
+      "capacity": 1,
+      "genderRestriction": null,
+      "assignedTo": [],
+      "image": "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=600&q=80",
+      "completedBy": []
+    },
+    {
+      "id": "downstairs_boys_corridor",
+      "name": "Downstairs boys corridor",
+      "desc": "sweep and mop",
+      "capacity": 1,
+      "genderRestriction": null,
+      "assignedTo": [
+        {
+          "reg": "20211278357",
+          "name": "Emmanuella Ebere"
+        }
+      ],
+      "image": "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80",
+      "completedBy": [
+        "20211278357"
+      ]
+    },
+    {
+      "id": "downstairs_girls_corridor",
+      "name": "Downstairs girls corridor",
+      "desc": "sweep and mop",
+      "capacity": 1,
+      "genderRestriction": null,
+      "assignedTo": [],
+      "image": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80",
+      "completedBy": []
+    },
+    {
+      "id": "downstairs_balcony",
+      "name": "Downstairs balcony",
+      "desc": "sweep and mop",
+      "capacity": 1,
+      "genderRestriction": null,
+      "assignedTo": [
+        {
+          "reg": "20211270417",
+          "name": "Peace Marshall"
+        }
+      ],
+      "image": "https://images.unsplash.com/photo-1464146072230-91cabc968266?auto=format&fit=crop&w=600&q=80",
+      "completedBy": [
+        "20211270417"
+      ]
+    },
+    {
+      "id": "girls_backyard",
+      "name": "Girls backyard",
+      "desc": "sweep, clear trash, and clean general area",
+      "capacity": 1,
+      "genderRestriction": null,
+      "assignedTo": [],
+      "image": "https://images.unsplash.com/photo-1558904541-efa8c3a30fc9?auto=format&fit=crop&w=600&q=80",
+      "completedBy": []
+    },
+    {
+      "id": "boys_backyard",
+      "name": "Boys backyard",
+      "desc": "sweep, clear trash, and clean general area",
+      "capacity": 1,
+      "genderRestriction": null,
+      "assignedTo": [],
+      "image": "https://images.unsplash.com/photo-1592194996308-7b43878e84a6?auto=format&fit=crop&w=600&q=80",
+      "completedBy": []
+    },
+    {
+      "id": "outside_compound",
+      "name": "Outside the compound",
+      "desc": "sweep external pathway by the fence",
+      "capacity": 2,
+      "genderRestriction": null,
+      "assignedTo": [
+        {
+          "reg": "20211284277",
+          "name": "Eze Chidimma"
+        }
+      ],
+      "image": "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=600&q=80",
+      "completedBy": [
+        "20211284277"
+      ]
+    },
+    {
+      "id": "tank_to_security",
+      "name": "Tank stand to Security house",
+      "desc": "sweep the entire driveway from tank stand to security",
+      "capacity": 1,
+      "genderRestriction": null,
+      "assignedTo": [
+        {
+          "reg": "20201244007",
+          "name": "Jesse"
+        }
+      ],
+      "image": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80",
+      "completedBy": [
+        "20201244007"
+      ]
+    },
+    {
+      "id": "tap_to_block_a",
+      "name": "Tap to Block A",
+      "desc": "sweep the walkway starting from the tap to block A",
+      "capacity": 1,
+      "genderRestriction": null,
+      "assignedTo": [
+        {
+          "reg": "20211305897",
+          "name": "Innocent David"
+        }
+      ],
+      "image": "https://images.unsplash.com/photo-1595275313353-80271587b611?auto=format&fit=crop&w=600&q=80",
+      "completedBy": [
+        "20211305897"
+      ]
+    },
+    {
+      "id": "the_gutter",
+      "name": "The gutter",
+      "desc": "unclog, sweep and clear sludge from the main drainage gutter",
+      "capacity": 3,
+      "genderRestriction": "male",
+      "assignedTo": [],
+      "image": "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80",
+      "completedBy": []
+    },
+    {
+      "id": "dustbin",
+      "name": "Throwing of dust bin",
+      "desc": "empty all hostel dustbins and dispose of trash at the main site",
+      "capacity": 2,
+      "genderRestriction": null,
+      "assignedTo": [
+        {
+          "reg": "20211274497",
+          "name": "Sophia"
+        }
+      ],
+      "image": "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=600&q=80",
+      "completedBy": [
+        "20211274497"
+      ]
+    }
+  ],
+  "history": [
+    {
+      "timestamp": "05/31/2026, 12:48:09 PM",
+      "message": "Admin Ezeigwe Samuel marked Iwuoha Emmanuel's task at \"Upstairs boys corridor\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 12:47:26 PM",
+      "message": "Admin Ezeigwe Samuel marked Jesse's task at \"Tank stand to Security house\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 12:47:24 PM",
+      "message": "Admin Ezeigwe Samuel marked Eze Chidimma's task at \"Outside the compound\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 12:47:22 PM",
+      "message": "Admin Ezeigwe Samuel marked Peace Marshall's task at \"Downstairs balcony\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 12:47:15 PM",
+      "message": "Admin Ezeigwe Samuel marked Sophia's task at \"Throwing of dust bin\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 12:47:13 PM",
+      "message": "Admin Ezeigwe Samuel marked Emmanuella Ebere's task at \"Downstairs boys corridor\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 12:43:50 PM",
+      "message": "Emmanuella Ebere (20211278357) was randomly assigned to \"Downstairs boys corridor\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:43:36 PM",
+      "message": "Sophia (20211274497) was randomly assigned to \"Throwing of dust bin\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:43:22 PM",
+      "message": "Iwuoha Emmanuel (20222322937) was randomly assigned to \"Upstairs boys corridor\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:43:06 PM",
+      "message": "Jesse (20201244007) was randomly assigned to \"Tank stand to Security house\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:42:55 PM",
+      "message": "Peace Marshall (20211270417) was randomly assigned to \"Downstairs balcony\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:42:42 PM",
+      "message": "Eze Chidimma (20211284277) was randomly assigned to \"Outside the compound\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:41:00 PM",
+      "message": "Admin Ezeigwe Samuel marked Innocent David's task at \"Tap to Block A\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 12:40:06 PM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"Tap to Block A\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:39:49 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:38:45 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:38:17 PM",
+      "message": "Admin Ezeigwe Samuel marked Innocent David's task at \"The staircase\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 12:37:12 PM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"The staircase\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:37:10 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:30:44 PM",
+      "message": "Peace Marshall (20211270417) was randomly assigned to \"The staircase\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:28:24 PM",
+      "message": "Emmanuella Ebere (20211278357) was randomly assigned to \"Upstairs boys corridor\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:23:45 PM",
+      "message": "Admin Ezeigwe Samuel marked Innocent David's task at \"Downstairs girls corridor\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 12:23:39 PM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"Downstairs girls corridor\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:23:37 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:23:19 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:15:15 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:08:18 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:08:17 PM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"The gutter\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:07:16 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:07:14 PM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"The staircase\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:07:12 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:07:10 PM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"Outside the compound\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:07:08 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:07:06 PM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"Downstairs girls corridor\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:07:04 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:07:02 PM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"Outside the compound\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:07:00 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:58 PM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"Outside the compound\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:56 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:54 PM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"Boys backyard\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:52 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:50 PM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"The staircase\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:48 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:45 PM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"Upstairs balcony\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:43 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/30/2026, 08:00:00 AM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"The gutter\""
+    },
+    {
+      "timestamp": "05/16/2026, 08:00:00 AM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"The gutter\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:41 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:22 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:18 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:09 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:03 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/30/2026, 08:00:00 AM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"The gutter\""
+    },
+    {
+      "timestamp": "05/16/2026, 08:00:00 AM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"The gutter\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:06:00 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:05:37 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:05:29 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:05:21 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:05:17 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:05:09 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:05:04 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/30/2026, 08:00:00 AM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"The gutter\""
+    },
+    {
+      "timestamp": "05/16/2026, 08:00:00 AM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"The gutter\""
+    },
+    {
+      "timestamp": "05/31/2026, 12:05:02 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13, 2026)."
+    },
+    {
+      "timestamp": "05/31/2026, 12:00:08 PM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-13T07:00, bypass=False"
+    },
+    {
+      "timestamp": "05/31/2026, 11:58:38 AM",
+      "message": "Emmanuella Ebere (20211278357) was randomly assigned to \"The staircase\""
+    },
+    {
+      "timestamp": "05/31/2026, 11:58:04 AM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"Upstairs boys corridor\""
+    },
+    {
+      "timestamp": "05/31/2026, 11:57:27 AM",
+      "message": "Peace Marshall (20211270417) was randomly assigned to \"Boys backyard\""
+    },
+    {
+      "timestamp": "05/31/2026, 11:56:21 AM",
+      "message": "Jesse (20201244007) was randomly assigned to \"The gutter\""
+    },
+    {
+      "timestamp": "05/31/2026, 11:53:28 AM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-13T07:00:00, bypass=True"
+    },
+    {
+      "timestamp": "05/31/2026, 11:53:22 AM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations. Next cleanup rolled forward to Wednesday, June 10, 2026."
+    },
+    {
+      "timestamp": "05/31/2026, 11:53:20 AM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2020-01-01T07:00:00, bypass=True"
+    },
+    {
+      "timestamp": "05/31/2026, 11:53:18 AM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Tuesday, January 01, 2030)."
+    },
+    {
+      "timestamp": "05/31/2026, 11:53:13 AM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2030-01-01T07:00:00, bypass=True"
+    },
+    {
+      "timestamp": "05/31/2026, 11:52:52 AM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2030-01-01T07:00:00, bypass=True"
+    },
+    {
+      "timestamp": "05/31/2026, 11:44:00 AM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-07-11T07:00, bypass=False"
+    },
+    {
+      "timestamp": "05/31/2026, 11:40:01 AM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations. Next cleanup rolled forward to Saturday, July 11, 2026."
+    },
+    {
+      "timestamp": "05/31/2026, 11:38:53 AM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-27T07:00, bypass=False"
+    },
+    {
+      "timestamp": "05/31/2026, 11:37:54 AM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"Downstairs balcony\""
+    },
+    {
+      "timestamp": "05/31/2026, 11:37:11 AM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-27T07:00, bypass=True"
+    },
+    {
+      "timestamp": "05/31/2026, 11:36:40 AM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations. Next cleanup rolled forward to Saturday, June 27, 2026."
+    },
+    {
+      "timestamp": "05/31/2026, 11:33:21 AM",
+      "message": "Eze Chidimma marked their task at \"The staircase\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 11:32:57 AM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-13T07:00, bypass=False"
+    },
+    {
+      "timestamp": "05/31/2026, 11:32:28 AM",
+      "message": "Ogazie Samuel (20211260337) was randomly assigned to \"Outside the compound\""
+    },
+    {
+      "timestamp": "05/31/2026, 11:29:18 AM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-13T07:00:00, bypass=True"
+    },
+    {
+      "timestamp": "05/31/2026, 11:29:14 AM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2030-01-01T07:00:00, bypass=False"
+    },
+    {
+      "timestamp": "05/31/2026, 11:28:53 AM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-13T07:00:00, bypass=True"
+    },
+    {
+      "timestamp": "05/31/2026, 11:08:45 AM",
+      "message": "Eze Chidimma (20211284277) was randomly assigned to \"The staircase\""
+    },
+    {
+      "timestamp": "05/31/2026, 11:05:11 AM",
+      "message": "Admin Ezeigwe Samuel reset all Saturday cleanup allocations"
+    },
+    {
+      "timestamp": "05/31/2026, 11:03:31 AM",
+      "message": "Innocent David marked their task at \"Downstairs balcony\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 11:03:17 AM",
+      "message": "Innocent David (20211305897) was randomly assigned to \"Downstairs balcony\""
+    },
+    {
+      "timestamp": "05/31/2026, 11:00:00 AM",
+      "message": "Sophia (20211274497) was randomly assigned to \"Upstairs balcony\""
+    },
+    {
+      "timestamp": "05/31/2026, 10:59:23 AM",
+      "message": "Eze Chidimma marked their task at \"Outside the compound\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 10:58:48 AM",
+      "message": "Eze Chidimma (20211284277) was randomly assigned to \"Outside the compound\""
+    },
+    {
+      "timestamp": "05/31/2026, 10:57:17 AM",
+      "message": "Ogazie Samuel marked their task at \"Girls backyard\" as completed!"
+    },
+    {
+      "timestamp": "05/31/2026, 10:56:43 AM",
+      "message": "Ogazie Samuel (20211260337) was randomly assigned to \"Girls backyard\""
+    }
+  ],
+  "settings": {
+    "nextCleanupDate": "2026-06-13T07:00:00",
+    "bypassTimeRestriction": true
+  }
+}

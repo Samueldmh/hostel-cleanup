@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Saturday Sweep - Hostel Cleanup Roster</title>
+  
+  <!-- Premium Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Styling -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Ambient matte texture grid (removes generic glowing circles) -->
+  <div class="matte-grid-overlay"></div>
+
+  <!-- Notification Banner -->
+  <div id="toast-notification" class="toast hidden">
+    <i class="fa-solid fa-bell"></i>
+    <span id="toast-message">Notification message here</span>
+  </div>
+
+  <div class="app-container">
+    <!-- ==================== HEADER ==================== -->
+    <header class="app-header">
+      <div class="header-logo">
+        <div class="logo-icon"><i class="fa-solid fa-feather-pointed"></i></div>
+        <div class="logo-text">
+          <h1 class="editorial-font">The Saturday Sweep</h1>
+          <p class="subtitle">Hostel Roster • Block A & B</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="date-badge">
+          <i class="fa-solid fa-calendar-day"></i>
+          <span id="current-date">Saturday Cleanup</span>
+        </div>
+        <div id="logged-user-profile" class="profile-badge hidden">
+          <i class="fa-solid fa-user-circle"></i>
+          <span id="profile-name">Loading...</span>
+          <button id="logout-btn" title="Log Out"><i class="fa-solid fa-right-from-bracket"></i></button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Overall Progress Area (Hidden in Login View) -->
+    <div id="progress-bar-container" class="dashboard-progress-container hidden">
+      <div class="progress-info">
+        <span><i class="fa-solid fa-chart-pie"></i> Allocation Status: <strong id="progress-text">0 / 19 slots assigned</strong></span>
+        <span id="completion-text">0/19 completed</span>
+      </div>
+      <div class="progress-bar-wrapper">
+        <div id="main-progress-bar" class="progress-bar" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- ==================== LOGIN VIEW ==================== -->
+    <main id="login-view" class="login-wrapper">
+      <div class="login-card glass">
+        <div class="login-header">
+          <div class="shield-icon"><i class="fa-solid fa-feather"></i></div>
+          <h2 class="editorial-font">Enter the Sweep</h2>
+          <p>Please authenticate using your registration number to access the Saturday cleanup roster.</p>
+        </div>
+
+        <form id="login-form">
+          <div class="input-group">
+            <label for="reg-number"><i class="fa-solid fa-id-card"></i> Registration Number</label>
+            <div class="input-wrapper">
+              <input type="text" id="reg-number" placeholder="Enter Registration Number (e.g. 20211260337)" required autocomplete="off">
+              <i class="fa-solid fa-arrow-right-to-bracket input-icon-right"></i>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary glow-btn" id="login-submit-btn">
+            <span>Enter Roster</span>
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </form>
+
+        <!-- Dynamic Credentials Helper (For convenient testing) -->
+        <div class="credentials-helper">
+          <div class="helper-toggle" id="helper-toggle">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Click here for testing credentials</span>
+            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+          </div>
+          <div class="helper-content hidden" id="helper-content">
+            <div class="helper-tabs">
+              <button class="tab-btn active" data-tab="boys">Boys</button>
+              <button class="tab-btn" data-tab="girls">Girls</button>
+              <button class="tab-btn" data-tab="admin">Admin</button>
+            </div>
+            <div class="tab-panes">
+              <div class="pane active" id="pane-boys">
+                <p>Click any name to autofill registration number:</p>
+                <div class="quick-chip-grid">
+                  <div class="quick-chip" data-reg="20211260337">Ogazie Samuel (Worker)</div>
+                  <div class="quick-chip" data-reg="20211305897">Innocent David (Worker)</div>
+                  <div class="quick-chip" data-reg="20201244007">Jesse (Worker)</div>
+                  <div class="quick-chip" data-reg="20222322937">Iwuoha Emmanuel (Worker)</div>
+                </div>
+              </div>
+              <div class="pane" id="pane-girls">
+                <p>Click any name to autofill registration number (Gutter task excluded):</p>
+                <div class="quick-chip-grid">
+                  <div class="quick-chip" data-reg="20211284277">Eze Chidimma (Worker)</div>
+                  <div class="quick-chip" data-reg="20211270417">Peace Marshall (Worker)</div>
+                  <div class="quick-chip" data-reg="20211278357">Emmanuella Ebere (Worker)</div>
+                  <div class="quick-chip" data-reg="20211274497">Sophia (Worker)</div>
+                </div>
+              </div>
+              <div class="pane" id="pane-admin">
+                <p>Click to log in as the Hostel Admin (Exempt from work, can edit photos/reset board):</p>
+                <div class="quick-chip-grid">
+                  <div class="quick-chip admin-chip" data-reg="20211271537"><i class="fa-solid fa-user-shield"></i> Ezeigwe Samuel (Admin)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== DASHBOARD VIEW ==================== -->
+    <main id="dashboard-view" class="dashboard-wrapper hidden">
+      <div class="dashboard-grid">
+        
+        <!-- ==================== LEFT COLUMN: LOCATIONS GRID ==================== -->
+        <section class="locations-panel">
+          <div class="panel-header">
+            <h3 class="editorial-font"><i class="fa-solid fa-map-location-dot"></i> Roster Locations</h3>
+            <p>Real-time status showing all active compound duties.</p>
+          </div>
+          <div id="locations-grid" class="locations-grid">
+            <!-- Dynamic location cards will be rendered here -->
+          </div>
+        </section>
+
+        <!-- ==================== RIGHT COLUMN: USER COMMAND CENTER ==================== -->
+        <section class="control-panel">
+          
+          <!-- Student Command Center (For Workers) -->
+          <div id="student-section" class="panel-card glass hidden">
+            
+            <!-- CASE 1: NOT YET ASSIGNED -->
+            <div id="assignment-pending" class="assignment-state pending-state">
+              <div class="state-icon pulse"><i class="fa-solid fa-shuffle"></i></div>
+              <h3 class="editorial-font">Ready for the Sweep?</h3>
+              <p>Hello, <strong class="user-highlight" id="pending-user-name">Student</strong>. Your weekly cleanup duty has not been allocated yet.</p>
+              
+              <div class="algorithm-guarantee">
+                <i class="fa-solid fa-circle-check text-gold"></i>
+                <div>
+                  <h4>Verifiable Fairness</h4>
+                  <p>Our algorithm randomizes your spot instantly. For physical safety, female members are exempted from gutter-clearing duties.</p>
+                </div>
+              </div>
+
+              <!-- Gorgeous Countdown Lock screen -->
+              <div id="countdown-container" class="countdown-card hidden">
+                <i class="fa-solid fa-hourglass-half countdown-icon"></i>
+                <h4>Allocations Locked</h4>
+                <p>Assignments open at **7:00 AM** on the scheduled cleanup day.</p>
+                <div class="countdown-timer">
+                  <div class="time-block">
+                    <span id="timer-days">00</span>
+                    <label>Days</label>
+                  </div>
+                  <div class="time-block">
+                    <span id="timer-hours">00</span>
+                    <label>Hrs</label>
+                  </div>
+                  <div class="time-block">
+                    <span id="timer-mins">00</span>
+                    <label>Mins</label>
+                  </div>
+                  <div class="time-block">
+                    <span id="timer-secs">00</span>
+                    <label>Secs</label>
+                  </div>
+                </div>
+                <p class="next-cleanup-banner"><i class="fa-solid fa-circle-play text-gold"></i> Scheduled: <span id="next-cleanup-target-lbl">June 13, 2026</span></p>
+              </div>
+
+              <button id="allocate-btn" class="btn-primary glow-btn full-width">
+                <span>Assign My Location</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+
+            <!-- ROULETTE SCREEN (While allocating) -->
+            <div id="assignment-loading" class="assignment-state loading-state hidden">
+              <div class="roulette-box">
+                <i class="fa-solid fa-spinner fa-spin loader-icon"></i>
+                <div class="roulette-window">
+                  <div id="roulette-scroller" class="roulette-scroller">
+                    <!-- Dynamic rolling locations during animation -->
+                  </div>
+                </div>
+              </div>
+              <h3 class="editorial-font">Generating Roster Spot...</h3>
+              <p>Computing randomized seed parameters to guarantee complete fairness.</p>
+            </div>
+
+            <!-- CASE 2: SUCCESSFULLY ASSIGNED -->
+            <div id="assignment-success" class="assignment-state success-state hidden">
+              <div class="success-header-graphic">
+                <div class="check-icon"><i class="fa-solid fa-check-double"></i></div>
+                <div class="confetti-effect"></div>
+              </div>
+              <span class="success-badge">Your Assignment</span>
+              <h2 id="assigned-location-title" class="editorial-font">Staircase</h2>
+              <p class="assigned-task-desc" id="assigned-location-desc">sweep and mop</p>
+
+              <div id="assigned-location-image" class="assigned-location-image">
+                <!-- Image of assigned location -->
+              </div>
+
+              <button id="complete-task-btn" class="hidden"></button>
+
+              <div id="pending-inspection-status" class="pending-inspection-box">
+                <div class="pending-spin-icon">
+                  <i class="fa-solid fa-hourglass-half fa-spin-pulse"></i>
+                </div>
+                <div class="pending-text">
+                  <h5>Pending Admin Inspection</h5>
+                  <p>Clean up your assigned area and notify the Hostel Admin for verification.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- CASE 3: WORKER EXTREME SUCCESS (Completed) -->
+            <div id="assignment-completed" class="assignment-state completed-state hidden">
+              <div class="celebration-icon"><i class="fa-solid fa-crown"></i></div>
+              <h3 class="editorial-font">Duty Discharged</h3>
+              <p>Well done, <strong class="user-highlight" id="completed-user-name">Student</strong>. You have completed your Saturday duty.</p>
+              <div class="thank-you-box">
+                <i class="fa-solid fa-house-chimney-window"></i>
+                <p>Thank you for contributing to keeping our hostel compound pristine and healthy!</p>
+              </div>
+              <div id="completed-spot-card" class="completed-spot-mini">
+                <!-- Mini summary of the spot they did -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ==================== ADMIN PANEL PANEL ==================== -->
+          <div id="admin-section" class="panel-card glass hidden">
+            <div class="admin-header">
+              <div class="admin-shield"><i class="fa-solid fa-user-shield"></i></div>
+              <h3>Admin Command Center</h3>
+              <span class="admin-title">Exempt from Work</span>
+            </div>
+
+            <!-- Admin Overview Stats -->
+            <div class="admin-stats-grid">
+              <div class="stat-box">
+                <span class="stat-num" id="stat-assigned-slots">0/19</span>
+                <span class="stat-label">Assigned Slots</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-num" id="stat-completed-tasks">0/19</span>
+                <span class="stat-label">Completed Tasks</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-num" id="stat-free-locations">14</span>
+                <span class="stat-label">Free Spots</span>
+              </div>
+            </div>
+
+            <!-- Admin Cleanup Schedule Settings -->
+            <div class="admin-settings-section">
+              <h4><i class="fa-solid fa-clock-rotate-left"></i> Cleanup Schedule</h4>
+              <div class="admin-settings-card">
+                <div class="settings-input-group">
+                  <label for="next-cleanup-input"><i class="fa-solid fa-calendar-check"></i> Next Active Saturday</label>
+                  <input type="datetime-local" id="next-cleanup-input" step="1">
+                </div>
+                <div class="settings-toggle-group">
+                  <label class="switch-wrapper">
+                    <input type="checkbox" id="bypass-time-toggle">
+                    <span class="switch-slider"></span>
+                  </label>
+                  <span class="toggle-text">Bypass Time Restriction (Testing)</span>
+                </div>
+                <button id="save-settings-btn" class="btn-info full-width" style="margin-top: 10px; padding: 8px 12px; font-size: 0.78rem;">
+                  <i class="fa-solid fa-floppy-disk"></i>
+                  <span>Save Roster Schedule</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Admin Action Group -->
+            <div class="admin-actions">
+              <h4>Quick Actions</h4>
+              <div class="admin-buttons">
+                <button id="admin-reset-btn" class="btn-danger full-width">
+                  <i class="fa-solid fa-trash-arrow-up"></i>
+                  <span>Reset All Allocations</span>
+                </button>
+                <button id="admin-share-btn" class="btn-info full-width">
+                  <i class="fa-solid fa-share-nodes"></i>
+                  <span>Copy Assignments for WhatsApp</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Admin Board / Roster -->
+            <div class="admin-roster-section">
+              <h4><i class="fa-solid fa-users-viewfinder"></i> Hostel Cleanup Roster</h4>
+              <div class="roster-table-wrapper">
+                <table class="roster-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Gender</th>
+                      <th>Assigned Location</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="roster-table-body">
+                    <!-- Populated dynamically via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Admin Audit Trail / Logs -->
+            <div class="admin-audit-section">
+              <h4><i class="fa-solid fa-history"></i> Real-time Activity Log</h4>
+              <div id="audit-trail-logs" class="audit-logs">
+                <p class="no-logs">No activity recorded yet for this session.</p>
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Hidden Photo Upload File Input (Admin Only) -->
+  <input type="file" id="admin-file-picker" accept="image/*" class="hidden">
+
+  <!-- Admin Reset Confirmation Modal -->
+  <div id="confirm-modal" class="modal-overlay hidden">
+    <div class="modal-card glass">
+      <div class="modal-alert-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <h3>Are you absolutely sure?</h3>
+      <p>This action will completely wipe out all current Saturday cleanup assignments, checklists, and statuses. The custom photos uploaded will remain intact. This cannot be undone!</p>
+      <div class="modal-buttons">
+        <button id="cancel-reset-btn" class="btn-secondary">Cancel</button>
+        <button id="confirm-reset-btn" class="btn-danger">Yes, Reset Board</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Background Music / Success sounds triggers (Native WebAudio API mock) -->
+  <script src="app.js"></script>
+</body>
+</html>
