@@ -5,7 +5,7 @@
       "name": "Innocent David",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": "upstairs_balcony"
+      "assignedLocationId": null
     },
     {
       "reg": "20211260337",
@@ -178,16 +178,9 @@
       "desc": "sweep and mop",
       "capacity": 1,
       "genderRestriction": null,
-      "assignedTo": [
-        {
-          "reg": "20211305897",
-          "name": "Innocent David"
-        }
-      ],
+      "assignedTo": [],
       "image": "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=600&q=80",
-      "completedBy": [
-        "20211305897"
-      ]
+      "completedBy": []
     },
     {
       "id": "downstairs_boys_corridor",
@@ -276,7 +269,7 @@
       "capacity": 3,
       "genderRestriction": "male",
       "assignedTo": [],
-      "image": "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80",
+      "image": "data:image/jpeg;base64,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",
       "completedBy": []
     },
     {
@@ -288,9 +281,267 @@
       "assignedTo": [],
       "image": "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=600&q=80",
       "completedBy": []
+    },
+    {
+      "id": "hostel_compound",
+      "name": "Hostel compound",
+      "desc": "sweep and clear trash in the entire hostel compound",
+      "capacity": 1,
+      "genderRestriction": null,
+      "assignedTo": [],
+      "image": "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=600&q=80",
+      "completedBy": []
     }
   ],
   "history": [
+    {
+      "timestamp": "6/1/2026, 8:34:58 AM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-13T07:00:00, bypass=false"
+    },
+    {
+      "timestamp": "6/1/2026, 8:34:52 AM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13)."
+    },
+    {
+      "timestamp": "6/1/2026, 8:34:36 AM",
+      "message": "Admin Ezeigwe Samuel marked Jonathan Edwin's task at \"Upstairs girls corridor\" as completed!"
+    },
+    {
+      "timestamp": "6/1/2026, 8:34:22 AM",
+      "message": "Jonathan Edwin (20201224647) was randomly assigned to \"Upstairs girls corridor\""
+    },
+    {
+      "timestamp": "6/1/2026, 8:34:10 AM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-13T07:00:00, bypass=true"
+    },
+    {
+      "timestamp": "5/31/2026, 4:08:11 PM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-13T07:00:00, bypass=false"
+    },
+    {
+      "timestamp": "5/31/2026, 4:07:53 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13)."
+    },
+    {
+      "timestamp": "5/31/2026, 4:06:48 PM",
+      "message": "Admin Ezeigwe Samuel marked Anyawu Precious's task at \"Downstairs girls corridor\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 4:06:02 PM",
+      "message": "Anyawu Precious (20211275397) was randomly assigned to \"Downstairs girls corridor\""
+    },
+    {
+      "timestamp": "5/31/2026, 3:50:22 PM",
+      "message": "Jonathan Edwin (20201224647) was randomly assigned to \"The gutter\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:57:48 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13)."
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:58 PM",
+      "message": "Admin Ezeigwe Samuel marked Ogazie Samuel's task at \"The gutter\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:53 PM",
+      "message": "Admin Ezeigwe Samuel marked Oparaji Wisdom's task at \"The gutter\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:50 PM",
+      "message": "Admin Ezeigwe Samuel marked Anyawu Chibuke's task at \"Outside the compound\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:45 PM",
+      "message": "Admin Ezeigwe Samuel marked Alfred Sankwai's task at \"Tank stand to Security house\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:43 PM",
+      "message": "Admin Ezeigwe Samuel marked Iwuoha Emmanuel's task at \"Downstairs boys corridor\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:39 PM",
+      "message": "Admin Ezeigwe Samuel marked Jonathan Edwin's task at \"The gutter\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:37 PM",
+      "message": "Admin Ezeigwe Samuel marked Okeke Munachi's task at \"The staircase\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:33 PM",
+      "message": "Admin Ezeigwe Samuel marked Jesse's task at \"Outside the compound\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:30 PM",
+      "message": "Admin Ezeigwe Samuel marked Anyajugo Confidence's task at \"Upstairs balcony\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:28 PM",
+      "message": "Admin Ezeigwe Samuel marked Peace Marshall's task at \"Boys backyard\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:26 PM",
+      "message": "Admin Ezeigwe Samuel marked Akabuike Favour's task at \"Downstairs balcony\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:22 PM",
+      "message": "Admin Ezeigwe Samuel marked Sylvester Agbo's task at \"Girls backyard\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:20 PM",
+      "message": "Admin Ezeigwe Samuel marked Bumma's task at \"Upstairs boys corridor\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:19 PM",
+      "message": "Admin Ezeigwe Samuel marked Eze Chidimma's task at \"Downstairs girls corridor\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:16 PM",
+      "message": "Admin Ezeigwe Samuel marked Ugochi Nwachukwu's task at \"Throwing of dust bin\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:14 PM",
+      "message": "Admin Ezeigwe Samuel marked Emmanuella Ebere's task at \"Tap to Block A\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:56:13 PM",
+      "message": "Admin Ezeigwe Samuel marked Sophia's task at \"Throwing of dust bin\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:55:13 PM",
+      "message": "Ogazie Samuel (20211260337) was randomly assigned to \"The gutter\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:54:48 PM",
+      "message": "Oparaji Wisdom (202113260487) was randomly assigned to \"The gutter\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:54:25 PM",
+      "message": "Anyawu Chibuke (20211280127) was randomly assigned to \"Outside the compound\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:53:57 PM",
+      "message": "Iwuoha Emmanuel (20222322937) was randomly assigned to \"Downstairs boys corridor\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:53:33 PM",
+      "message": "Alfred Sankwai (20211262237) was randomly assigned to \"Tank stand to Security house\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:53:12 PM",
+      "message": "Sylvester Agbo (20201224687) was randomly assigned to \"Girls backyard\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:52:45 PM",
+      "message": "Jonathan Edwin (20201224647) was randomly assigned to \"The gutter\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:52:21 PM",
+      "message": "Okeke Munachi (20201225657) was randomly assigned to \"The staircase\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:51:46 PM",
+      "message": "Jesse (20201244007) was randomly assigned to \"Outside the compound\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:50:41 PM",
+      "message": "Eze Chidimma (20211284277) was randomly assigned to \"Downstairs girls corridor\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:50:11 PM",
+      "message": "Anyajugo Confidence (20201227337) was randomly assigned to \"Upstairs balcony\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:49:31 PM",
+      "message": "Peace Marshall (20211270417) was randomly assigned to \"Boys backyard\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:48:38 PM",
+      "message": "Akabuike Favour (20211266587) was randomly assigned to \"Downstairs balcony\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:47:43 PM",
+      "message": "Ugochi Nwachukwu (20211270207) was randomly assigned to \"Throwing of dust bin\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:47:11 PM",
+      "message": "Emmanuella Ebere (20211278357) was randomly assigned to \"Tap to Block A\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:46:31 PM",
+      "message": "Sophia (20211274497) was randomly assigned to \"Throwing of dust bin\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:45:46 PM",
+      "message": "Bumma (20201251837) was randomly assigned to \"Upstairs boys corridor\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:44:58 PM",
+      "message": "Admin Ezeigwe Samuel marked Anyawu Precious's task at \"Upstairs girls corridor\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:44:41 PM",
+      "message": "Anyawu Precious (20211275397) was randomly assigned to \"Upstairs girls corridor\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:44:06 PM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-13T07:00:00, bypass=true"
+    },
+    {
+      "timestamp": "5/31/2026, 2:19:45 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13)."
+    },
+    {
+      "timestamp": "5/31/2026, 2:19:31 PM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-13T07:00:00, bypass=false"
+    },
+    {
+      "timestamp": "5/31/2026, 2:16:37 PM",
+      "message": "Admin Ezeigwe Samuel marked Emmanuella Ebere's task at \"The staircase\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 2:15:20 PM",
+      "message": "Emmanuella Ebere (20211278357) was randomly assigned to \"The staircase\""
+    },
+    {
+      "timestamp": "5/31/2026, 2:13:30 PM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-13T07:00:00, bypass=true"
+    },
+    {
+      "timestamp": "5/31/2026, 2:13:04 PM",
+      "message": "Admin Ezeigwe Samuel updated the picture for \"The gutter\""
+    },
+    {
+      "timestamp": "5/31/2026, 1:59:20 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13)."
+    },
+    {
+      "timestamp": "5/31/2026, 1:59:17 PM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-13T07:00, bypass=false"
+    },
+    {
+      "timestamp": "5/31/2026, 1:59:15 PM",
+      "message": "Admin Ezeigwe Samuel updated settings: next cleanup set to 2026-06-13T07:00:00, bypass=false"
+    },
+    {
+      "timestamp": "5/31/2026, 1:55:00 PM",
+      "message": "Admin Ezeigwe Samuel marked Ogazie Samuel's task at \"Upstairs balcony\" as completed!"
+    },
+    {
+      "timestamp": "5/31/2026, 1:54:15 PM",
+      "message": "Ogazie Samuel (20211260337) was randomly assigned to \"Upstairs balcony\""
+    },
+    {
+      "timestamp": "5/31/2026, 1:53:15 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13)."
+    },
+    {
+      "timestamp": "5/31/2026, 1:47:51 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13)."
+    },
+    {
+      "timestamp": "5/31/2026, 1:47:08 PM",
+      "message": "Admin Ezeigwe Samuel reset Saturday allocations (schedule kept at Saturday, June 13)."
+    },
     {
       "timestamp": "05/31/2026, 02:31:18 PM",
       "message": "Admin Ezeigwe Samuel marked Innocent David's task at \"Upstairs balcony\" as completed!"
@@ -694,6 +945,6 @@
   ],
   "settings": {
     "nextCleanupDate": "2026-06-13T07:00:00",
-    "bypassTimeRestriction": true
+    "bypassTimeRestriction": false
   }
 }
