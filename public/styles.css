@@ -2024,3 +2024,26 @@ select#setup-question:focus {
   gap: 8px;
 }
 
+/* Password Toggle Icon styling */
+.password-toggle {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+.password-toggle:hover {
+  color: var(--primary);
+  text-shadow: 0 0 8px var(--primary-glow);
+}
+

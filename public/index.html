@@ -82,7 +82,7 @@
             <label for="reg-password"><i class="fa-solid fa-lock"></i> Password</label>
             <div class="input-wrapper">
               <input type="password" id="reg-password" placeholder="Enter your password">
-              <i class="fa-solid fa-key input-icon-right"></i>
+              <i class="fa-solid fa-eye password-toggle" id="toggle-reg-password"></i>
             </div>
             <div class="forgot-link-wrapper" style="margin-top: 8px; text-align: right;">
               <a href="#" id="forgot-pwd-link" style="color: var(--primary); font-size: 0.85rem; text-decoration: none; border-bottom: 1px dashed transparent; transition: all 0.3s ease;">Forgot Password?</a>
@@ -113,6 +113,7 @@
             <label for="setup-password"><i class="fa-solid fa-lock"></i> Choose Password</label>
             <div class="input-wrapper">
               <input type="password" id="setup-password" placeholder="Minimum 4 characters" required>
+              <i class="fa-solid fa-eye password-toggle" id="toggle-setup-password"></i>
             </div>
           </div>
           
@@ -120,6 +121,7 @@
             <label for="setup-confirm-password"><i class="fa-solid fa-circle-check"></i> Confirm Password</label>
             <div class="input-wrapper">
               <input type="password" id="setup-confirm-password" placeholder="Confirm your password" required>
+              <i class="fa-solid fa-eye password-toggle" id="toggle-setup-confirm-password"></i>
             </div>
           </div>
 
@@ -174,6 +176,7 @@
             <label for="reset-new-password"><i class="fa-solid fa-key"></i> New Password</label>
             <div class="input-wrapper">
               <input type="password" id="reset-new-password" placeholder="Enter new password (min. 4 chars)" required>
+              <i class="fa-solid fa-eye password-toggle" id="toggle-reset-new-password"></i>
             </div>
           </div>
 
@@ -228,7 +231,6 @@
             </div>
           </div>
         </div>
-      </div>
     </main>
 
     <!-- ==================== DASHBOARD VIEW ==================== -->

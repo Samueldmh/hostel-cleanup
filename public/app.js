@@ -231,6 +231,31 @@ function initEventListeners() {
 
   // 12. Instant bypass toggle autosave (New!)
   DOM.bypassTimeToggle.addEventListener('change', autoSaveBypassSetting);
+
+  // 13. Password peep/visibility toggles
+  const pwdToggles = [
+    { btnId: 'toggle-reg-password', inputId: 'reg-password' },
+    { btnId: 'toggle-setup-password', inputId: 'setup-password' },
+    { btnId: 'toggle-setup-confirm-password', inputId: 'setup-confirm-password' },
+    { btnId: 'toggle-reset-new-password', inputId: 'reset-new-password' }
+  ];
+  pwdToggles.forEach(t => {
+    const btn = document.getElementById(t.btnId);
+    const input = document.getElementById(t.inputId);
+    if (btn && input) {
+      btn.addEventListener('click', () => {
+        if (input.type === 'password') {
+          input.type = 'text';
+          btn.classList.remove('fa-eye');
+          btn.classList.add('fa-eye-slash');
+        } else {
+          input.type = 'password';
+          btn.classList.remove('fa-eye-slash');
+          btn.classList.add('fa-eye');
+        }
+      });
+    }
+  });
 }
 
 // --- API ACTIONS ---
