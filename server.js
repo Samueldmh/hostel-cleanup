@@ -5,6 +5,17 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
+const crypto = require('crypto');
+
+function hashPassword(password) {
+  if (!password) return "";
+  return crypto.createHash('sha256').update(password).digest('hex');
+}
+
+function hashAnswer(answer) {
+  if (!answer) return "";
+  return crypto.createHash('sha256').update(answer.trim().toLowerCase()).digest('hex');
+}
 const PORT = process.env.PORT || 3000;
 const DB_PATH = path.join(__dirname, 'data', 'db.json');
 
@@ -191,18 +202,44 @@ req.end();
 
 // 1. User Login Validation
 app.post('/api/login', (req, res) => {
-  const { reg } = req.body;
+  const { reg, password } = req.body;
   if (!reg) {
     return res.status(400).json({ success: false, message: 'Registration number is required!' });
   }
 
   const db = readDB();
-  // Find member matching registration number (case-insensitive and trimmed)
   const cleanReg = reg.trim();
   const member = db.members.find(m => m.reg.toLowerCase() === cleanReg.toLowerCase());
 
   if (!member) {
     return res.status(404).json({ success: false, message: 'Registration number not found in hostel database!' });
+  }
+
+  // Two-stage login check
+  if (password === undefined) {
+    if (!member.password) {
+      return res.json({
+        success: true,
+        requiresSetup: true,
+        member: { reg: member.reg, name: member.name }
+      });
+    } else {
+      return res.json({
+        success: true,
+        requiresPassword: true,
+        member: { reg: member.reg, name: member.name }
+      });
+    }
+  }
+
+  // Password verification stage
+  if (!member.password) {
+    return res.status(400).json({ success: false, message: 'Password is not set up yet for this account!' });
+  }
+
+  const hashedInput = hashPassword(password);
+  if (member.password !== hashedInput) {
+    return res.status(401).json({ success: false, message: 'Incorrect password!' });
   }
 
   res.json({
@@ -215,6 +252,119 @@ app.post('/api/login', (req, res) => {
       assignedLocationId: member.assignedLocationId
     }
   });
+});
+
+// 1.1 First-time Security Setup
+app.post('/api/setup-security', (req, res) => {
+  const { reg, password, securityQuestion, securityAnswer } = req.body;
+  if (!reg || !password || !securityQuestion || !securityAnswer) {
+    return res.status(400).json({ success: false, message: 'Missing required fields for setup!' });
+  }
+
+  const db = readDB();
+  const memberIndex = db.members.findIndex(m => m.reg.toLowerCase() === reg.trim().toLowerCase());
+
+  if (memberIndex === -1) {
+    return res.status(404).json({ success: false, message: 'User not found!' });
+  }
+
+  const member = db.members[memberIndex];
+  if (member.password) {
+    return res.status(400).json({ success: false, message: 'Password has already been set up for this account!' });
+  }
+
+  // Save hashed credentials
+  db.members[memberIndex].password = hashPassword(password);
+  db.members[memberIndex].securityQuestion = securityQuestion.trim();
+  db.members[memberIndex].securityAnswer = hashAnswer(securityAnswer);
+
+  if (writeDB(db)) {
+    res.json({
+      success: true,
+      message: 'Security setup completed successfully!',
+      member: {
+        reg: member.reg,
+        name: member.name,
+        gender: member.gender,
+        isAdmin: member.isAdmin,
+        assignedLocationId: member.assignedLocationId
+      }
+    });
+  } else {
+    res.status(500).json({ success: false, message: 'Error saving setup details to database!' });
+  }
+});
+
+// 1.2 Get Security Question for Reset
+app.post('/api/get-security-question', (req, res) => {
+  const { reg } = req.body;
+  if (!reg) {
+    return res.status(400).json({ success: false, message: 'Registration number is required!' });
+  }
+
+  const db = readDB();
+  const member = db.members.find(m => m.reg.toLowerCase() === reg.trim().toLowerCase());
+
+  if (!member) {
+    return res.status(404).json({ success: false, message: 'Registration number not found!' });
+  }
+
+  if (!member.securityQuestion) {
+    return res.status(400).json({ success: false, message: 'No security question set up for this account. Please contact the Admin.' });
+  }
+
+  res.json({ success: true, question: member.securityQuestion });
+});
+
+// 1.3 Reset Password using Security Question
+app.post('/api/reset-password', (req, res) => {
+  const { reg, securityAnswer, newPassword } = req.body;
+  if (!reg || !securityAnswer || !newPassword) {
+    return res.status(400).json({ success: false, message: 'Missing parameters!' });
+  }
+
+  const db = readDB();
+  const memberIndex = db.members.findIndex(m => m.reg.toLowerCase() === reg.trim().toLowerCase());
+
+  if (memberIndex === -1) {
+    return res.status(404).json({ success: false, message: 'User not found!' });
+  }
+
+  const member = db.members[memberIndex];
+  if (!member.securityAnswer) {
+    return res.status(400).json({ success: false, message: 'Security question not set up for this account!' });
+  }
+
+  const hashedAnswerInput = hashAnswer(securityAnswer);
+  if (member.securityAnswer !== hashedAnswerInput) {
+    return res.status(401).json({ success: false, message: 'Incorrect answer to the security question!' });
+  }
+
+  // Update password
+  db.members[memberIndex].password = hashPassword(newPassword);
+
+  // Log action
+  if (!db.history) db.history = [];
+  db.history.unshift({
+    timestamp: new Date().toLocaleString(),
+    message: `${member.name} (${member.reg}) reset their password using their security question.`
+  });
+
+  if (writeDB(db)) {
+    res.json({
+      success: true,
+      message: 'Password reset successful!',
+      member: {
+        reg: member.reg,
+        name: member.name,
+        gender: member.gender,
+        isAdmin: member.isAdmin,
+        assignedLocationId: member.assignedLocationId
+      }
+    });
+  } else {
+    res.status(500).json({ success: false, message: 'Error saving new password to database!' });
+  }
 });
 
 // 2. Retrieve Complete Hostel State

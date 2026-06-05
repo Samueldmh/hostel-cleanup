@@ -1996,3 +1996,31 @@ body {
   transform: none;
   box-shadow: none;
 }
+
+/* Password & Security Setup/Reset custom styles */
+.forgot-link-wrapper a:hover {
+  color: var(--cyan) !important;
+  text-shadow: 0 0 6px rgba(6, 182, 212, 0.4);
+}
+
+select#setup-question option {
+  background-color: #0d121f;
+  color: var(--text-color);
+  font-family: inherit;
+}
+
+select#setup-question:focus {
+  border-color: var(--primary);
+}
+
+.setup-actions button,
+.reset-actions button {
+  font-family: var(--font-family-title);
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+

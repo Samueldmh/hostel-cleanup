@@ -18,6 +18,7 @@ let countdownTimerInterval = null;
 const DOM = {
   // Views
   loginView: document.getElementById('login-view'),
+  mainLoginCard: document.getElementById('main-login-card'),
   dashboardView: document.getElementById('dashboard-view'),
   
   // Header
@@ -36,6 +37,29 @@ const DOM = {
   loginForm: document.getElementById('login-form'),
   regNumberInput: document.getElementById('reg-number'),
   loginSubmitBtn: document.getElementById('login-submit-btn'),
+  regInputGroup: document.getElementById('reg-input-group'),
+  passwordInputGroup: document.getElementById('password-input-group'),
+  regPasswordInput: document.getElementById('reg-password'),
+  loginSubmitText: document.getElementById('login-submit-text'),
+  loginBackBtn: document.getElementById('login-back-btn'),
+  forgotPwdLink: document.getElementById('forgot-pwd-link'),
+  
+  // Setup Security Form
+  setupSecurityCard: document.getElementById('setup-security-card'),
+  setupSecurityForm: document.getElementById('setup-security-form'),
+  setupPasswordInput: document.getElementById('setup-password'),
+  setupConfirmPasswordInput: document.getElementById('setup-confirm-password'),
+  setupQuestionSelect: document.getElementById('setup-question'),
+  setupAnswerInput: document.getElementById('setup-answer'),
+  setupCancelBtn: document.getElementById('setup-cancel-btn'),
+  
+  // Reset Password Form
+  resetPasswordCard: document.getElementById('reset-password-card'),
+  resetPasswordForm: document.getElementById('reset-password-form'),
+  resetQuestionLabel: document.getElementById('reset-question-label'),
+  resetAnswerInput: document.getElementById('reset-answer'),
+  resetNewPasswordInput: document.getElementById('reset-new-password'),
+  resetCancelBtn: document.getElementById('reset-cancel-btn'),
   
   // Credentials Helper
   helperToggle: document.getElementById('helper-toggle'),
@@ -167,6 +191,20 @@ function initEventListeners() {
 
   // 4. Login Submission
   DOM.loginForm.addEventListener('submit', handleLogin);
+  
+  // Back button in login form
+  DOM.loginBackBtn.addEventListener('click', resetLoginFormState);
+  
+  // Forgot password click
+  DOM.forgotPwdLink.addEventListener('click', handleForgotPassword);
+
+  // 4.1 Security Setup Submission
+  DOM.setupSecurityForm.addEventListener('submit', handleSecuritySetup);
+  DOM.setupCancelBtn.addEventListener('click', cancelSecuritySetup);
+
+  // 4.2 Password Reset Submission
+  DOM.resetPasswordForm.addEventListener('submit', handlePasswordReset);
+  DOM.resetCancelBtn.addEventListener('click', cancelPasswordReset);
 
   // 5. Logout Trigger
   DOM.logoutBtn.addEventListener('click', handleLogout);
@@ -232,17 +270,185 @@ async function fetchState() {
   }
 }
 
-// Handle login submissions
+// Handle login submissions (Two-Stage Verification)
 async function handleLogin(e) {
   e.preventDefault();
   const regVal = DOM.regNumberInput.value.trim();
   if (!regVal) return;
 
+  const isPasswordStage = !DOM.passwordInputGroup.classList.contains('hidden');
   DOM.loginSubmitBtn.disabled = true;
-  DOM.loginSubmitBtn.innerHTML = `<span>Validating Credentials...</span> <i class="fa-solid fa-spinner fa-spin"></i>`;
+
+  if (!isPasswordStage) {
+    // Stage 1: Validate registration number and detect password presence
+    DOM.loginSubmitBtn.innerHTML = `<span>Validating Reg No...</span> <i class="fa-solid fa-spinner fa-spin"></i>`;
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reg: regVal })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        if (data.requiresSetup) {
+          // Account has no password yet - redirect to Setup Card
+          DOM.mainLoginCard.classList.add('hidden');
+          DOM.setupSecurityCard.classList.remove('hidden');
+          // Prefill reg hidden value or state
+          DOM.setupSecurityForm.dataset.reg = regVal;
+          showToast('First-time login! Set up security parameters.', 'info');
+        } else if (data.requiresPassword) {
+          // Account has a password - reveal password field
+          DOM.regInputGroup.classList.add('hidden');
+          DOM.passwordInputGroup.classList.remove('hidden');
+          DOM.loginBackBtn.classList.remove('hidden');
+          DOM.loginSubmitText.textContent = "Log In";
+          DOM.regPasswordInput.focus();
+        }
+      } else {
+        showToast(data.message, 'error');
+      }
+    } catch (err) {
+      console.error('Login validation error:', err);
+      showToast('Server connection failed. Try again!', 'error');
+    } finally {
+      DOM.loginSubmitBtn.disabled = false;
+      if (!isPasswordStage && DOM.passwordInputGroup.classList.contains('hidden') && DOM.setupSecurityCard.classList.contains('hidden')) {
+        DOM.loginSubmitBtn.innerHTML = `<span>Continue</span> <i class="fa-solid fa-chevron-right"></i>`;
+      } else if (!DOM.passwordInputGroup.classList.contains('hidden')) {
+        DOM.loginSubmitBtn.innerHTML = `<span>Log In</span> <i class="fa-solid fa-right-to-bracket"></i>`;
+      } else {
+        DOM.loginSubmitBtn.innerHTML = `<span>Continue</span> <i class="fa-solid fa-chevron-right"></i>`;
+      }
+    }
+  } else {
+    // Stage 2: Verify password
+    const passwordVal = DOM.regPasswordInput.value;
+    if (!passwordVal) {
+      DOM.loginSubmitBtn.disabled = false;
+      showToast('Password is required!', 'error');
+      return;
+    }
+
+    DOM.loginSubmitBtn.innerHTML = `<span>Verifying Password...</span> <i class="fa-solid fa-spinner fa-spin"></i>`;
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reg: regVal, password: passwordVal })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        currentUser = data.member;
+        sessionStorage.setItem('hostel_user', JSON.stringify(currentUser));
+        enterDashboard();
+        showToast(`Welcome back, ${currentUser.name}!`, 'success');
+        resetLoginFormState();
+      } else {
+        showToast(data.message, 'error');
+      }
+    } catch (err) {
+      console.error('Password login error:', err);
+      showToast('Login verification failed. Try again!', 'error');
+    } finally {
+      DOM.loginSubmitBtn.disabled = false;
+      DOM.loginSubmitBtn.innerHTML = `<span>Log In</span> <i class="fa-solid fa-right-to-bracket"></i>`;
+    }
+  }
+}
+
+// Reset login form back to Stage 1 (Reg input stage)
+function resetLoginFormState() {
+  DOM.regInputGroup.classList.remove('hidden');
+  DOM.passwordInputGroup.classList.add('hidden');
+  DOM.loginBackBtn.classList.add('hidden');
+  DOM.loginSubmitText.textContent = "Continue";
+  DOM.loginSubmitBtn.innerHTML = `<span>Continue</span> <i class="fa-solid fa-chevron-right"></i>`;
+  DOM.regPasswordInput.value = '';
+}
+
+// First-time Security Setup Submit Handler
+async function handleSecuritySetup(e) {
+  e.preventDefault();
+  const reg = DOM.setupSecurityForm.dataset.reg;
+  const password = DOM.setupPasswordInput.value;
+  const confirmPassword = DOM.setupConfirmPasswordInput.value;
+  const question = DOM.setupQuestionSelect.value;
+  const answer = DOM.setupAnswerInput.value.trim();
+
+  if (!reg || !password || !confirmPassword || !question || !answer) {
+    showToast('All fields are required!', 'error');
+    return;
+  }
+
+  if (password.length < 4) {
+    showToast('Password must be at least 4 characters long!', 'error');
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    showToast('Passwords do not match!', 'error');
+    return;
+  }
 
   try {
-    const res = await fetch('/api/login', {
+    const res = await fetch('/api/setup-security', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        reg: reg,
+        password: password,
+        securityQuestion: question,
+        securityAnswer: answer
+      })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      currentUser = data.member;
+      sessionStorage.setItem('hostel_user', JSON.stringify(currentUser));
+      
+      // Clean form inputs
+      DOM.setupPasswordInput.value = '';
+      DOM.setupConfirmPasswordInput.value = '';
+      DOM.setupQuestionSelect.value = '';
+      DOM.setupAnswerInput.value = '';
+      
+      // Transition to dashboard
+      DOM.setupSecurityCard.classList.add('hidden');
+      enterDashboard();
+      showToast('Security configuration completed successfully!', 'success');
+      resetLoginFormState();
+    } else {
+      showToast(data.message, 'error');
+    }
+  } catch (err) {
+    console.error('Security setup error:', err);
+    showToast('Failed to save security parameters. Try again!', 'error');
+  }
+}
+
+// Cancel Security Setup
+function cancelSecuritySetup() {
+  DOM.setupSecurityCard.classList.add('hidden');
+  DOM.mainLoginCard.classList.remove('hidden');
+  resetLoginFormState();
+}
+
+// Handle Forgot Password link click
+async function handleForgotPassword(e) {
+  e.preventDefault();
+  const regVal = DOM.regNumberInput.value.trim();
+  if (!regVal) {
+    showToast('Please enter your registration number first!', 'info');
+    DOM.regNumberInput.focus();
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/get-security-question', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ reg: regVal })
@@ -250,21 +456,76 @@ async function handleLogin(e) {
     const data = await res.json();
 
     if (data.success) {
-      currentUser = data.member;
-      sessionStorage.setItem('hostel_user', JSON.stringify(currentUser));
-      enterDashboard();
-      showToast(`Welcome back, ${currentUser.name}!`, 'success');
-      DOM.regNumberInput.value = '';
+      DOM.mainLoginCard.classList.add('hidden');
+      DOM.resetPasswordCard.classList.remove('hidden');
+      DOM.resetQuestionLabel.innerHTML = `<i class="fa-solid fa-circle-question" style="color: #c084fc;"></i> ${data.question}`;
+      DOM.resetPasswordForm.dataset.reg = regVal;
+      DOM.resetAnswerInput.focus();
     } else {
       showToast(data.message, 'error');
     }
   } catch (err) {
-    console.error('Login error:', err);
-    showToast('Server connection failed. Try again!', 'error');
-  } finally {
-    DOM.loginSubmitBtn.disabled = false;
-    DOM.loginSubmitBtn.innerHTML = `<span>Access Dashboard</span> <i class="fa-solid fa-right-to-bracket"></i>`;
+    console.error('Fetch security question error:', err);
+    showToast('Error retrieving security question. Try again!', 'error');
   }
+}
+
+// Handle password reset using security question
+async function handlePasswordReset(e) {
+  e.preventDefault();
+  const reg = DOM.resetPasswordForm.dataset.reg;
+  const answer = DOM.resetAnswerInput.value.trim();
+  const newPassword = DOM.resetNewPasswordInput.value;
+
+  if (!reg || !answer || !newPassword) {
+    showToast('All fields are required!', 'error');
+    return;
+  }
+
+  if (newPassword.length < 4) {
+    showToast('Password must be at least 4 characters long!', 'error');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        reg: reg,
+        securityAnswer: answer,
+        newPassword: newPassword
+      })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      currentUser = data.member;
+      sessionStorage.setItem('hostel_user', JSON.stringify(currentUser));
+      
+      // Clean inputs
+      DOM.resetAnswerInput.value = '';
+      DOM.resetNewPasswordInput.value = '';
+      
+      // Transition
+      DOM.resetPasswordCard.classList.add('hidden');
+      enterDashboard();
+      showToast('Password reset successful! Welcome to the sweep.', 'success');
+      resetLoginFormState();
+    } else {
+      showToast(data.message, 'error');
+    }
+  } catch (err) {
+    console.error('Password reset error:', err);
+    showToast('Failed to reset password. Try again!', 'error');
+  }
+}
+
+// Cancel Password Reset
+function cancelPasswordReset() {
+  DOM.resetPasswordCard.classList.add('hidden');
+  DOM.mainLoginCard.classList.remove('hidden');
+  resetLoginFormState();
 }
 
 // Trigger spot allocation for logged-in user

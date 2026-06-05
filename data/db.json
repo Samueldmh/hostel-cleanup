@@ -5,140 +5,200 @@
       "name": "Innocent David",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20211260337",
       "name": "Ogazie Samuel",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "202113260487",
       "name": "Oparaji Wisdom",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20211280127",
       "name": "Anyawu Chibuke",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20222322937",
       "name": "Iwuoha Emmanuel",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20211262237",
       "name": "Alfred Sankwai",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20201224687",
       "name": "Sylvester Agbo",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20201224647",
       "name": "Jonathan Edwin",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20201225657",
       "name": "Okeke Munachi",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20201244007",
       "name": "Jesse",
       "gender": "male",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20211284277",
       "name": "Eze Chidimma",
       "gender": "female",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20201227337",
       "name": "Anyajugo Confidence",
       "gender": "female",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20211270417",
       "name": "Peace Marshall",
       "gender": "female",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20211266587",
       "name": "Akabuike Favour",
       "gender": "female",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20201251837",
       "name": "Bumma",
       "gender": "female",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20211275397",
       "name": "Anyawu Precious",
       "gender": "female",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20211270207",
       "name": "Ugochi Nwachukwu",
       "gender": "female",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20211278357",
       "name": "Emmanuella Ebere",
       "gender": "female",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20211274497",
       "name": "Sophia",
       "gender": "female",
       "isAdmin": false,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     },
     {
       "reg": "20211271537",
       "name": "Ezeigwe Samuel",
       "gender": "male",
       "isAdmin": true,
-      "assignedLocationId": null
+      "assignedLocationId": null,
+      "password": "",
+      "securityQuestion": "",
+      "securityAnswer": ""
     }
   ],
   "tasks": [

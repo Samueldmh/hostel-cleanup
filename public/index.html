@@ -62,7 +62,7 @@
 
     <!-- ==================== LOGIN VIEW ==================== -->
     <main id="login-view" class="login-wrapper">
-      <div class="login-card glass">
+      <div id="main-login-card" class="login-card glass">
         <div class="login-header">
           <div class="shield-icon"><i class="fa-solid fa-feather"></i></div>
           <h2 class="editorial-font">Enter the Sweep</h2>
@@ -70,18 +70,122 @@
         </div>
 
         <form id="login-form">
-          <div class="input-group">
+          <div class="input-group" id="reg-input-group">
             <label for="reg-number"><i class="fa-solid fa-id-card"></i> Registration Number</label>
             <div class="input-wrapper">
               <input type="text" id="reg-number" placeholder="Enter Registration Number (e.g. 20211260337)" required autocomplete="off">
               <i class="fa-solid fa-arrow-right-to-bracket input-icon-right"></i>
             </div>
           </div>
+          
+          <div class="input-group hidden" id="password-input-group">
+            <label for="reg-password"><i class="fa-solid fa-lock"></i> Password</label>
+            <div class="input-wrapper">
+              <input type="password" id="reg-password" placeholder="Enter your password">
+              <i class="fa-solid fa-key input-icon-right"></i>
+            </div>
+            <div class="forgot-link-wrapper" style="margin-top: 8px; text-align: right;">
+              <a href="#" id="forgot-pwd-link" style="color: var(--primary); font-size: 0.85rem; text-decoration: none; border-bottom: 1px dashed transparent; transition: all 0.3s ease;">Forgot Password?</a>
+            </div>
+          </div>
+
           <button type="submit" class="btn-primary glow-btn" id="login-submit-btn">
-            <span>Enter Roster</span>
+            <span id="login-submit-text">Continue</span>
             <i class="fa-solid fa-chevron-right"></i>
           </button>
+          
+          <button type="button" class="btn-secondary hidden" id="login-back-btn" style="margin-top: 10px; width: 100%;">
+            <i class="fa-solid fa-arrow-left"></i> Back
+          </button>
         </form>
+      </div>
+
+      <!-- ==================== PASSWORD SETUP VIEW ==================== -->
+      <div id="setup-security-card" class="login-card glass hidden">
+        <div class="login-header">
+          <div class="shield-icon" style="background: rgba(220, 160, 40, 0.1); color: var(--primary);"><i class="fa-solid fa-user-shield"></i></div>
+          <h2 class="editorial-font">Account Security Setup</h2>
+          <p>First-time login detected. Please choose a secure password and select a security question to protect your account.</p>
+        </div>
+
+        <form id="setup-security-form">
+          <div class="input-group">
+            <label for="setup-password"><i class="fa-solid fa-lock"></i> Choose Password</label>
+            <div class="input-wrapper">
+              <input type="password" id="setup-password" placeholder="Minimum 4 characters" required>
+            </div>
+          </div>
+          
+          <div class="input-group">
+            <label for="setup-confirm-password"><i class="fa-solid fa-circle-check"></i> Confirm Password</label>
+            <div class="input-wrapper">
+              <input type="password" id="setup-confirm-password" placeholder="Confirm your password" required>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="setup-question"><i class="fa-solid fa-circle-question"></i> Security Question</label>
+            <div class="input-wrapper">
+              <select id="setup-question" required style="width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-color); border-radius: 8px; font-family: inherit; font-size: 0.95rem; cursor: pointer; outline: none; transition: border-color 0.3s ease;">
+                <option value="" disabled selected>Select a question...</option>
+                <option value="What room number are you currently in?">What room number are you currently in?</option>
+                <option value="What high school did you attend?">What high school did you attend?</option>
+                <option value="What is the name of your childhood pet?">What is the name of your childhood pet?</option>
+                <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+                <option value="What was the name of your first teacher?">What was the name of your first teacher?</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="setup-answer"><i class="fa-solid fa-comment-dots"></i> Secret Answer</label>
+            <div class="input-wrapper">
+              <input type="text" id="setup-answer" placeholder="This answer is case-insensitive" required autocomplete="off">
+            </div>
+          </div>
+
+          <div class="setup-actions" style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="button" class="btn-secondary" id="setup-cancel-btn" style="flex: 1;">Cancel</button>
+            <button type="submit" class="btn-primary glow-btn" style="flex: 2;">
+              <span>Save & Log In</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ==================== PASSWORD RESET VIEW ==================== -->
+      <div id="reset-password-card" class="login-card glass hidden">
+        <div class="login-header">
+          <div class="shield-icon" style="background: rgba(160, 40, 220, 0.1); color: #c084fc;"><i class="fa-solid fa-unlock-keyhole"></i></div>
+          <h2 class="editorial-font">Reset Password</h2>
+          <p>Provide the answer to your security question to set a new password.</p>
+        </div>
+
+        <form id="reset-password-form">
+          <div class="input-group">
+            <label id="reset-question-label" style="font-weight: 500; color: var(--text-color); margin-bottom: 8px; display: block;"></label>
+            <div class="input-wrapper">
+              <input type="text" id="reset-answer" placeholder="Enter your secret answer" required autocomplete="off">
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="reset-new-password"><i class="fa-solid fa-key"></i> New Password</label>
+            <div class="input-wrapper">
+              <input type="password" id="reset-new-password" placeholder="Enter new password (min. 4 chars)" required>
+            </div>
+          </div>
+
+          <div class="reset-actions" style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="button" class="btn-secondary" id="reset-cancel-btn" style="flex: 1;">Cancel</button>
+            <button type="submit" class="btn-primary glow-btn" style="flex: 2;">
+              <span>Reset & Log In</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </form>
+      </div>
 
         <!-- Dynamic Credentials Helper (For convenient testing) -->
         <div class="credentials-helper">

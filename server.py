@@ -5,6 +5,17 @@ import random
 import urllib.request
 import urllib.error
 from datetime import datetime, timedelta
+import hashlib
+
+def hash_password(password):
+    if not password:
+        return ""
+    return hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+def hash_answer(answer):
+    if not answer:
+        return ""
+    return hashlib.sha256(answer.strip().lower().encode('utf-8')).hexdigest()
 
 PORT = 3000
 LOCAL_DB_PATH = os.path.join(os.path.dirname(__file__), 'data', 'db.json')
@@ -178,6 +189,7 @@ class CustomHandler(http.server.BaseHTTPRequestHandler):
         # 1. Login Endpoint
         if self.path == '/api/login':
             reg = req_body.get('reg')
+            password = req_body.get('password')
             if not reg:
                 self.send_json_response(400, {"success": False, "message": "Registration number is required!"})
                 return
@@ -190,6 +202,33 @@ class CustomHandler(http.server.BaseHTTPRequestHandler):
                 self.send_json_response(404, {"success": False, "message": "Registration number not found!"})
                 return
             
+            # Two-stage login check
+            if password is None:
+                if not member.get("password"):
+                    self.send_json_response(200, {
+                        "success": True,
+                        "requiresSetup": True,
+                        "member": {"reg": member["reg"], "name": member["name"]}
+                    })
+                    return
+                else:
+                    self.send_json_response(200, {
+                        "success": True,
+                        "requiresPassword": True,
+                        "member": {"reg": member["reg"], "name": member["name"]}
+                    })
+                    return
+
+            # Password verification stage
+            if not member.get("password"):
+                self.send_json_response(400, {"success": False, "message": "Password is not set up yet for this account!"})
+                return
+
+            hashed_input = hash_password(password)
+            if member["password"] != hashed_input:
+                self.send_json_response(401, {"success": False, "message": "Incorrect password!"})
+                return
+            
             self.send_json_response(200, {
                 "success": True,
                 "member": {
@@ -200,6 +239,121 @@ class CustomHandler(http.server.BaseHTTPRequestHandler):
                     "assignedLocationId": member.get("assignedLocationId")
                 }
             })
+
+        # 1.1 First-time Security Setup Endpoint
+        elif self.path == '/api/setup-security':
+            reg = req_body.get('reg')
+            password = req_body.get('password')
+            security_question = req_body.get('securityQuestion')
+            security_answer = req_body.get('securityAnswer')
+
+            if not reg or not password or not security_question or not security_answer:
+                self.send_json_response(400, {"success": False, "message": "Missing required fields for setup!"})
+                return
+
+            db = read_db()
+            clean_reg = reg.strip().lower()
+            member = next((m for m in db["members"] if m["reg"].lower() == clean_reg), None)
+
+            if not member:
+                self.send_json_response(404, {"success": False, "message": "User not found!"})
+                return
+
+            if member.get("password"):
+                self.send_json_response(400, {"success": False, "message": "Password has already been set up for this account!"})
+                return
+
+            # Save hashed credentials
+            member["password"] = hash_password(password)
+            member["securityQuestion"] = security_question.strip()
+            member["securityAnswer"] = hash_answer(security_answer)
+
+            if write_db(db):
+                self.send_json_response(200, {
+                    "success": True, 
+                    "message": "Security setup completed successfully!",
+                    "member": {
+                        "reg": member["reg"],
+                        "name": member["name"],
+                        "gender": member["gender"],
+                        "isAdmin": member.get("isAdmin", False),
+                        "assignedLocationId": member.get("assignedLocationId")
+                    }
+                })
+            else:
+                self.send_json_response(500, {"success": False, "message": "Error saving setup details to database!"})
+
+        # 1.2 Get Security Question Endpoint
+        elif self.path == '/api/get-security-question':
+            reg = req_body.get('reg')
+            if not reg:
+                self.send_json_response(400, {"success": False, "message": "Registration number is required!"})
+                return
+
+            db = read_db()
+            clean_reg = reg.strip().lower()
+            member = next((m for m in db["members"] if m["reg"].lower() == clean_reg), None)
+
+            if not member:
+                self.send_json_response(404, {"success": False, "message": "Registration number not found!"})
+                return
+
+            if not member.get("securityQuestion"):
+                self.send_json_response(400, {"success": False, "message": "No security question set up for this account. Please contact the Admin."})
+                return
+
+            self.send_json_response(200, {"success": True, "question": member["securityQuestion"]})
+
+        # 1.3 Reset Password Endpoint
+        elif self.path == '/api/reset-password':
+            reg = req_body.get('reg')
+            security_answer = req_body.get('securityAnswer')
+            new_password = req_body.get('newPassword')
+
+            if not reg or not security_answer or not new_password:
+                self.send_json_response(400, {"success": False, "message": "Missing parameters!"})
+                return
+
+            db = read_db()
+            clean_reg = reg.strip().lower()
+            member = next((m for m in db["members"] if m["reg"].lower() == clean_reg), None)
+
+            if not member:
+                self.send_json_response(404, {"success": False, "message": "User not found!"})
+                return
+
+            if not member.get("securityAnswer"):
+                self.send_json_response(400, {"success": False, "message": "Security question not set up for this account!"})
+                return
+
+            hashed_answer_input = hash_answer(security_answer)
+            if member["securityAnswer"] != hashed_answer_input:
+                self.send_json_response(401, {"success": False, "message": "Incorrect answer to the security question!"})
+                return
+
+            # Update password
+            member["password"] = hash_password(new_password)
+
+            # Log action
+            db.setdefault("history", []).insert(0, {
+                "timestamp": datetime.now().strftime("%m/%d/%Y, %I:%M:%S %p"),
+                "message": f"{member['name']} ({member['reg']}) reset their password using their security question."
+            })
+
+            if write_db(db):
+                self.send_json_response(200, {
+                    "success": True, 
+                    "message": "Password reset successful!",
+                    "member": {
+                        "reg": member["reg"],
+                        "name": member["name"],
+                        "gender": member["gender"],
+                        "isAdmin": member.get("isAdmin", False),
+                        "assignedLocationId": member.get("assignedLocationId")
+                    }
+                })
+            else:
+                self.send_json_response(500, {"success": False, "message": "Error saving new password to database!"})
 
         # 2. Allocation Endpoint
         elif self.path == '/api/allocate':
