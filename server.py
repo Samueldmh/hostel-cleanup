@@ -355,9 +355,10 @@ class CustomHandler(http.server.BaseHTTPRequestHandler):
             else:
                 self.send_json_response(500, {"success": False, "message": "Error saving new password to database!"})
 
-        # 2. Allocation Endpoint
+        # 2. Allocation Endpoint (FCFS & Passcode Verified)
         elif self.path == '/api/allocate':
             reg = req_body.get('reg')
+            passcode = req_body.get('passcode')
             if not reg:
                 self.send_json_response(400, {"success": False, "message": "Registration number is required!"})
                 return
@@ -397,23 +398,29 @@ class CustomHandler(http.server.BaseHTTPRequestHandler):
                     })
                     return
 
+            # Passcode verification
+            expected_passcode = settings.get("assemblyPasscode", "1234")
+            if not passcode or passcode.strip() != expected_passcode.strip():
+                self.send_json_response(400, {"success": False, "message": "Invalid assembly passcode! Please get the code from the Admin at the assembly point."})
+                return
+
             # Find available tasks (slots count < capacity)
             available = [t for t in db["tasks"] if len(t.get("assignedTo", [])) < t["capacity"]]
 
-            # Apply girl constraint
-            if member["gender"] == "female":
-                available = [t for t in available if t.get("genderRestriction") != "male"]
-            else:
-                # Apply consecutive gutter constraint for boys: no boy assigned to gutter 3 times in a row
-                consec_gutter = get_consecutive_gutter_count(member["reg"], db.get("history", []))
-                if consec_gutter >= 2:
-                    available = [t for t in available if t["id"] != "the_gutter"]
+            # Apply consecutive gutter constraint (no member assigned to gutter 3 times in a row)
+            consec_gutter = get_consecutive_gutter_count(member["reg"], db.get("history", []))
+            if consec_gutter >= 2:
+                available = [t for t in available if t["id"] != "the_gutter"]
 
             if not available:
                 self.send_json_response(400, {"success": False, "message": "No available free cleanup spots left! Contact Admin."})
                 return
 
-            # Randomly select task
+            # FCFS matching: Select tasks from the lowest available difficulty level
+            min_difficulty = min(t.get("difficulty", 2) for t in available)
+            available = [t for t in available if t.get("difficulty", 2) == min_difficulty]
+
+            # Randomly select task from easiest subset
             selected = random.choice(available)
             selected.setdefault("assignedTo", []).append({
                 "reg": member["reg"],
@@ -581,6 +588,7 @@ class CustomHandler(http.server.BaseHTTPRequestHandler):
             admin_reg = req_body.get('adminReg')
             bypass = req_body.get('bypassTimeRestriction')
             next_date_str = req_body.get('nextCleanupDate')
+            assembly_passcode = req_body.get('assemblyPasscode')
             
             if not admin_reg:
                 self.send_json_response(400, {"success": False, "message": "Admin registration is required!"})
@@ -603,9 +611,11 @@ class CustomHandler(http.server.BaseHTTPRequestHandler):
                 except ValueError:
                     self.send_json_response(400, {"success": False, "message": "Invalid date format! Use YYYY-MM-DDTHH:MM:SS"})
                     return
+            if assembly_passcode is not None:
+                settings["assemblyPasscode"] = str(assembly_passcode).strip()
                     
             # Log
-            log_msg = f"Admin {admin['name']} updated settings: next cleanup set to {settings.get('nextCleanupDate')}, bypass={settings.get('bypassTimeRestriction')}"
+            log_msg = f"Admin {admin['name']} updated settings: next cleanup set to {settings.get('nextCleanupDate')}, bypass={settings.get('bypassTimeRestriction')}, passcode={settings.get('assemblyPasscode')}"
             db.setdefault("history", []).insert(0, {
                 "timestamp": datetime.now().strftime("%m/%d/%Y, %I:%M:%S %p"),
                 "message": log_msg

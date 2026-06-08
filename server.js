@@ -385,9 +385,9 @@ app.get('/api/state', (req, res) => {
   });
 });
 
-// 3. Core Random Allocation Algorithm with Constraints
+// 3. Core Random Allocation Algorithm with Constraints (FCFS & Passcode Verified)
 app.post('/api/allocate', (req, res) => {
-  const { reg } = req.body;
+  const { reg, passcode } = req.body;
   if (!reg) {
     return res.status(400).json({ success: false, message: 'Registration number is required!' });
   }
@@ -427,28 +427,29 @@ app.post('/api/allocate', (req, res) => {
     }
   }
 
+  // Passcode verification
+  const expectedPasscode = settings.assemblyPasscode || "1234";
+  if (!passcode || passcode.trim() !== expectedPasscode.trim()) {
+    return res.status(400).json({ success: false, message: 'Invalid assembly passcode! Please get the code from the Admin at the assembly point.' });
+  }
+
   // Filter tasks with available capacity
   let availableTasks = db.tasks.filter(t => t.assignedTo.length < t.capacity);
 
-  // Apply gender constraint: Girls are excluded from the gutter
-  if (member.gender === 'female') {
-    availableTasks = availableTasks.filter(t => t.genderRestriction !== 'male');
-  } else {
-    // Apply consecutive gutter constraint for boys: no boy assigned to gutter 3 times in a row
-    let consecutiveGutter = 0;
-    const history = db.history || [];
-    for (const log of history) {
-      if (log.message && log.message.includes(`(${member.reg})`) && log.message.includes('was randomly assigned to')) {
-        if (log.message.includes('"The gutter"') || log.message.includes('\\"The gutter\\"') || log.message.includes('the_gutter')) {
-          consecutiveGutter++;
-        } else {
-          break; // streak broken
-        }
+  // Apply consecutive gutter constraint (no member assigned to gutter 3 times in a row)
+  let consecutiveGutter = 0;
+  const history = db.history || [];
+  for (const log of history) {
+    if (log.message && log.message.includes(`(${member.reg})`) && log.message.includes('assigned to')) {
+      if (log.message.includes('"The gutter"') || log.message.includes('\\"The gutter\\"') || log.message.includes('the_gutter')) {
+        consecutiveGutter++;
+      } else {
+        break; // streak broken
       }
     }
-    if (consecutiveGutter >= 2) {
-      availableTasks = availableTasks.filter(t => t.id !== 'the_gutter');
-    }
+  }
+  if (consecutiveGutter >= 2) {
+    availableTasks = availableTasks.filter(t => t.id !== 'the_gutter');
   }
 
   if (availableTasks.length === 0) {
@@ -458,7 +459,11 @@ app.post('/api/allocate', (req, res) => {
     });
   }
 
-  // Perform random selection
+  // FCFS matching: Select tasks from the lowest available difficulty level
+  const minDifficulty = Math.min(...availableTasks.map(t => t.difficulty || 2));
+  availableTasks = availableTasks.filter(t => (t.difficulty || 2) === minDifficulty);
+
+  // Perform random selection from the easiest subset
   const randomIndex = Math.floor(Math.random() * availableTasks.length);
   const selectedTask = availableTasks[randomIndex];
 
@@ -658,7 +663,7 @@ app.post('/api/complete-task', (req, res) => {
 
 // 7. Admin-Only Update Settings
 app.post('/api/update-settings', (req, res) => {
-  const { adminReg, bypassTimeRestriction, nextCleanupDate } = req.body;
+  const { adminReg, bypassTimeRestriction, nextCleanupDate, assemblyPasscode } = req.body;
 
   if (!adminReg) {
     return res.status(400).json({ success: false, message: 'Admin registration number is required!' });
@@ -685,9 +690,13 @@ app.post('/api/update-settings', (req, res) => {
     db.settings.nextCleanupDate = nextCleanupDate;
   }
 
+  if (assemblyPasscode !== undefined) {
+    db.settings.assemblyPasscode = String(assemblyPasscode).trim();
+  }
+
   // Log action
   if (!db.history) db.history = [];
-  const logMsg = `Admin ${admin.name} updated settings: next cleanup set to ${db.settings.nextCleanupDate}, bypass=${db.settings.bypassTimeRestriction}`;
+  const logMsg = `Admin ${admin.name} updated settings: next cleanup set to ${db.settings.nextCleanupDate}, bypass=${db.settings.bypassTimeRestriction}, passcode=${db.settings.assemblyPasscode}`;
   db.history.unshift({
     timestamp: new Date().toLocaleString(),
     message: logMsg

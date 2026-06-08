@@ -263,8 +263,8 @@
               <div class="algorithm-guarantee">
                 <i class="fa-solid fa-circle-check text-gold"></i>
                 <div>
-                  <h4>Verifiable Fairness</h4>
-                  <p>Our algorithm randomizes your spot instantly. For physical safety, female members are exempted from gutter-clearing duties.</p>
+                  <h4>Arrival-Based Priority (FCFS)</h4>
+                  <p>Our algorithm assigns your spot based on arrival order—the earlier you check in, the easier your task will be!</p>
                 </div>
               </div>
 
@@ -292,6 +292,14 @@
                   </div>
                 </div>
                 <p class="next-cleanup-banner"><i class="fa-solid fa-circle-play text-gold"></i> Scheduled: <span id="next-cleanup-target-lbl">June 13, 2026</span></p>
+              </div>
+
+              <!-- Passcode Input for FCFS physical assembly -->
+              <div class="input-group" id="passcode-container" style="width: 100%; max-width: 280px; margin: 20px auto 20px;">
+                <label for="assembly-passcode-input" style="text-align: center; display: block; margin-bottom: 6px;"><i class="fa-solid fa-key text-gold"></i> Assembly Passcode</label>
+                <div class="input-wrapper">
+                  <input type="text" id="assembly-passcode-input" placeholder="Get code from Admin" required autocomplete="off" style="text-align: center; letter-spacing: 2px;">
+                </div>
               </div>
 
               <button id="allocate-btn" class="btn-primary glow-btn full-width">
@@ -389,6 +397,17 @@
                   <label for="next-cleanup-input"><i class="fa-solid fa-calendar-check"></i> Next Active Saturday</label>
                   <input type="datetime-local" id="next-cleanup-input" step="1">
                 </div>
+
+                <div class="settings-input-group" style="margin-top: 12px;">
+                  <label for="admin-passcode-input"><i class="fa-solid fa-key"></i> Active Assembly Passcode</label>
+                  <div class="input-wrapper" style="display: flex; gap: 8px; align-items: center;">
+                    <input type="text" id="admin-passcode-input" placeholder="e.g. 1234" style="flex: 1; padding: 8px 12px; font-size: 0.8rem; text-align: center; letter-spacing: 2px;">
+                    <button type="button" id="randomize-passcode-btn" class="btn-secondary" style="padding: 8px 12px; font-size: 0.75rem; border-radius: 4px; display: flex; align-items: center; justify-content: center;" title="Generate Random 4-digit Code">
+                      <i class="fa-solid fa-shuffle"></i>
+                    </button>
+                  </div>
+                </div>
+
                 <div class="settings-toggle-group">
                   <label class="switch-wrapper">
                     <input type="checkbox" id="bypass-time-toggle">

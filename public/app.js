@@ -124,7 +124,10 @@ const DOM = {
   nextCleanupTargetLbl: document.getElementById('next-cleanup-target-lbl'),
   nextCleanupInput: document.getElementById('next-cleanup-input'),
   bypassTimeToggle: document.getElementById('bypass-time-toggle'),
-  saveSettingsBtn: document.getElementById('save-settings-btn')
+  saveSettingsBtn: document.getElementById('save-settings-btn'),
+  assemblyPasscodeInput: document.getElementById('assembly-passcode-input'),
+  adminPasscodeInput: document.getElementById('admin-passcode-input'),
+  randomizePasscodeBtn: document.getElementById('randomize-passcode-btn')
 };
 
 // --- INITIALIZATION ---
@@ -232,6 +235,17 @@ function initEventListeners() {
   // 12. Instant bypass toggle autosave (New!)
   DOM.bypassTimeToggle.addEventListener('change', autoSaveBypassSetting);
 
+  // 14. Randomize Passcode Button (Admin Settings)
+  if (DOM.randomizePasscodeBtn) {
+    DOM.randomizePasscodeBtn.addEventListener('click', () => {
+      const randomCode = Math.floor(1000 + Math.random() * 9000); // 4-digit code
+      DOM.adminPasscodeInput.value = randomCode;
+      showToast('New passcode generated! Save settings to activate.', 'info');
+      DOM.adminPasscodeInput.style.borderColor = 'var(--cyan)';
+      setTimeout(() => DOM.adminPasscodeInput.style.borderColor = 'var(--glass-border)', 1000);
+    });
+  }
+
   // 13. Password peep/visibility toggles
   const pwdToggles = [
     { btnId: 'toggle-reg-password', inputId: 'reg-password' },
@@ -283,6 +297,9 @@ async function fetchState() {
           }
           if (document.activeElement !== DOM.bypassTimeToggle) {
             DOM.bypassTimeToggle.checked = !!appState.settings.bypassTimeRestriction;
+          }
+          if (document.activeElement !== DOM.adminPasscodeInput) {
+            DOM.adminPasscodeInput.value = appState.settings.assemblyPasscode || "1234";
           }
         }
       }
@@ -557,6 +574,13 @@ function cancelPasswordReset() {
 async function triggerSpotAllocation() {
   if (!currentUser || currentUser.isAdmin) return;
 
+  const passcodeVal = DOM.assemblyPasscodeInput ? DOM.assemblyPasscodeInput.value.trim() : "";
+  if (!passcodeVal) {
+    showToast('Please enter the Assembly Passcode from the Admin!', 'error');
+    if (DOM.assemblyPasscodeInput) DOM.assemblyPasscodeInput.focus();
+    return;
+  }
+
   // 1. Enter UI roulette animation loading view
   DOM.assignmentPending.classList.add('hidden');
   DOM.assignmentLoading.classList.remove('hidden');
@@ -569,7 +593,7 @@ async function triggerSpotAllocation() {
     const apiPromise = fetch('/api/allocate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ reg: currentUser.reg })
+      body: JSON.stringify({ reg: currentUser.reg, passcode: passcodeVal })
     });
 
     const res = await apiPromise;
@@ -1291,9 +1315,15 @@ async function saveScheduleSettings() {
 
   const nextCleanupDate = DOM.nextCleanupInput.value;
   const bypassTimeRestriction = DOM.bypassTimeToggle.checked;
+  const assemblyPasscode = DOM.adminPasscodeInput ? DOM.adminPasscodeInput.value.trim() : "1234";
 
   if (!nextCleanupDate) {
     showToast('Please select a valid cleanup date and time!', 'error');
+    return;
+  }
+
+  if (!assemblyPasscode) {
+    showToast('Please provide an assembly passcode!', 'error');
     return;
   }
 
@@ -1307,7 +1337,8 @@ async function saveScheduleSettings() {
       body: JSON.stringify({
         adminReg: currentUser.reg,
         bypassTimeRestriction: bypassTimeRestriction,
-        nextCleanupDate: nextCleanupDate
+        nextCleanupDate: nextCleanupDate,
+        assemblyPasscode: assemblyPasscode
       })
     });
     const data = await res.json();
